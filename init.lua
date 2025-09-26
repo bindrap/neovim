@@ -123,6 +123,27 @@ require("lazy").setup({
     -- ✅ LSP/DAP/Linter installer
     { "williamboman/mason.nvim", config = true },
 
+    -- ✅ Color scheme
+    {
+      "catppuccin/nvim",
+      name = "catppuccin",
+      priority = 1000,
+      config = function()
+        require("catppuccin").setup({
+          flavour = "mocha", -- latte, frappe, macchiato, mocha
+          transparent_background = false,
+          integrations = {
+            treesitter = true,
+            telescope = true,
+            gitsigns = true,
+            nvimtree = true,
+            which_key = true,
+          },
+        })
+        vim.cmd.colorscheme("catppuccin")
+      end,
+    },
+
     -- ✅ File explorer (Neo-tree)
     {
       "nvim-neo-tree/neo-tree.nvim",
@@ -139,3 +160,10 @@ require("lazy").setup({
     },
   },
 })
+
+-- Basic Neovim settings
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
