@@ -105,7 +105,10 @@ if command -v apt &> /dev/null; then
     sudo apt install -y nodejs npm python3 python3-pip
 elif command -v pacman &> /dev/null; then
     print_info "Detected pacman package manager"
-    sudo pacman -S --needed nodejs npm python python-pip
+    print_info "Updating package databases and mirrors..."
+    sudo pacman -Sy --noconfirm
+    print_info "Installing packages (will continue on mirror errors)..."
+    sudo pacman -S --needed --noconfirm nodejs npm python python-pip || print_warning "Some packages may have failed to install due to mirror issues"
 elif command -v dnf &> /dev/null; then
     print_info "Detected dnf package manager"
     sudo dnf install -y nodejs npm python3 python3-pip
