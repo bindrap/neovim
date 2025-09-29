@@ -116,11 +116,10 @@ else
     print_warning "Package manager not detected. Please install nodejs, npm, and python3 manually."
 fi
 
-# Install Python language server
-if command -v pip3 &> /dev/null; then
-    print_info "Installing Python language server..."
-    pip3 install pyright --user
-fi
+# Install Python language server (via Mason instead of system pip)
+# Skip system-wide Python package installation on Arch due to PEP 668
+# Mason will handle LSP installation inside Neovim
+print_info "Python language servers will be installed via Mason in Neovim"
 
 # 6. Start Neovim to trigger plugin installation
 print_info "Starting Neovim to install plugins..."
