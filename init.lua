@@ -79,8 +79,10 @@ require("lazy").setup({
     {
       "neovim/nvim-lspconfig",
       config = function()
-        vim.lsp.config.pyright = {}
-        vim.lsp.config.lua_ls = {
+        local lspconfig = require("lspconfig")
+
+        lspconfig.pyright.setup({})
+        lspconfig.lua_ls.setup({
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
@@ -88,7 +90,7 @@ require("lazy").setup({
               workspace = { library = vim.api.nvim_get_runtime_file("", true) },
             }
           }
-        }
+        })
       end,
     },
 
@@ -104,7 +106,12 @@ require("lazy").setup({
     },
 
     -- ✅ Status line
-    { "nvim-lualine/lualine.nvim" },
+    {
+      "nvim-lualine/lualine.nvim",
+      config = function()
+        require("lualine").setup()
+      end,
+    },
 
     -- ✅ Fuzzy finder
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -157,6 +164,24 @@ require("lazy").setup({
         -- Toggle Neo-tree with Ctrl+n
         vim.keymap.set("n", "<C-n>", ":Neotree toggle<CR>", { silent = true })
       end,
+    },
+
+    -- ✅ Luarocks support
+    {
+      "vhyrro/luarocks.nvim",
+      priority = 1000,
+      config = true,
+    },
+
+    -- ✅ Image display
+    {
+      "3rd/image.nvim",
+      dependencies = { "vhyrro/luarocks.nvim" },
+      opts = {
+        backend = "kitty", -- or "ueberzug"
+        max_height_window_percentage = 50,
+        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
+      },
     },
   },
 })
