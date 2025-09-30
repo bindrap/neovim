@@ -320,3 +320,4 @@ vim.opt.relativenumber = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
+vim.opt.conceallevel = 2  -- Required for Obsidian.nvim UI features

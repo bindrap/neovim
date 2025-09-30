@@ -141,6 +141,16 @@ Edit the configuration file at:
 ~/.config/nvim/init.lua
 ```
 
+### Important Configuration Settings
+
+**Obsidian.nvim UI Features:**
+The configuration includes `conceallevel = 2` which enables Obsidian.nvim's UI features like hiding markdown syntax. If you want to see raw markdown syntax, you can:
+1. Disable it temporarily: `:set conceallevel=0`
+2. Or remove/modify this line in `init.lua`:
+```lua
+vim.opt.conceallevel = 2  -- Required for Obsidian.nvim UI features
+```
+
 ### Adding More Languages to Treesitter
 
 Find this section in `init.lua`:
