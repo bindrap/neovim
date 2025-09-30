@@ -59,12 +59,24 @@ rm nvim-linux-x86_64.tar.gz
 # 2. Add Neovim to PATH
 print_info "Adding Neovim to PATH..."
 
-# Check if already in PATH
-if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.bashrc; then
-    echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
-    print_success "Added Neovim to PATH in ~/.bashrc"
-else
-    print_info "Neovim already in PATH"
+# Add to bashrc if it exists
+if [ -f ~/.bashrc ]; then
+    if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.bashrc; then
+        echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
+        print_success "Added Neovim to PATH in ~/.bashrc"
+    else
+        print_info "Neovim already in PATH (~/.bashrc)"
+    fi
+fi
+
+# Add to zshrc if it exists
+if [ -f ~/.zshrc ]; then
+    if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.zshrc; then
+        echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.zshrc
+        print_success "Added Neovim to PATH in ~/.zshrc"
+    else
+        print_info "Neovim already in PATH (~/.zshrc)"
+    fi
 fi
 
 # Also add to current session
@@ -157,7 +169,12 @@ echo "  ✅ Keymap helper (which-key)"
 echo "  ✅ Package manager (Mason)"
 
 print_info "To start using Neovim:"
-echo "  1. Restart your terminal or run: source ~/.bashrc"
+echo "  1. Restart your terminal or run:"
+if [ -f ~/.zshrc ]; then
+    echo "     source ~/.zshrc"
+elif [ -f ~/.bashrc ]; then
+    echo "     source ~/.bashrc"
+fi
 echo "  2. Launch Neovim with: nvim"
 echo "  3. Open file explorer with: Ctrl+N"
 echo "  4. Open a directory with: nvim ~/your-directory"
