@@ -19,6 +19,10 @@ This script installs and configures:
 - ✅ **Keymap helper** (which-key)
 - ✅ **Package manager** (Mason)
 - ✅ **Image display support** (image.nvim)
+- ✅ **Zettelkasten note-taking** (Telekasten)
+- ✅ **Markdown preview** (markdown-preview.nvim, glow.nvim)
+- ✅ **Obsidian integration** (obsidian.nvim - graph view)
+- ✅ **Faster fuzzy search** (telescope-fzf-native)
 
 ## Prerequisites
 
@@ -77,12 +81,44 @@ Or simply restart your terminal.
 nvim
 ```
 
-### Basic Keybindings
+### 📖 Complete Controls Guide
+
+**See [CONTROLS.md](CONTROLS.md) for a comprehensive guide to all keybindings and commands!**
+
+### Quick Start Keybindings
 
 - **Ctrl+N** - Toggle file explorer (Neo-tree)
 - **Ctrl+Space** - Trigger autocomplete
 - **Tab** - Navigate autocomplete menu / Jump to next snippet field
 - **Enter** - Confirm autocomplete selection
+- **Space** (then wait) - Show all available keybindings
+
+### Zettelkasten Note-Taking (Telekasten)
+
+All notes are stored in `~/Documents/Notes` and can be synced with Nextcloud/Obsidian.
+
+**Keybindings** (Leader key is `Space`):
+
+- **Space + zf** - Find notes (fuzzy search)
+- **Space + zd** - Find daily notes
+- **Space + zg** - Search text in notes (grep)
+- **Space + zz** - Follow link under cursor
+- **Space + zn** - Create new note
+- **Space + zT** - Go to today's daily note
+- **Space + zW** - Go to this week's weekly note
+- **Space + zc** - Show calendar
+- **Space + zb** - Show backlinks (what links to this note)
+- **Space + zI** - Insert image link
+
+**Creating Wiki Links:**
+- Type `[[Note Name]]` to create a link
+- Press `Space + zz` on a link to follow it (creates the note if it doesn't exist)
+
+**Visualizing Graph:**
+Since notes are plain Markdown in `~/Documents/Notes`:
+1. Open the folder in Obsidian to see the graph view
+2. Or use Logseq for graph visualization
+3. Your notes remain portable and accessible anywhere!
 
 ### Installing Additional Language Servers
 
