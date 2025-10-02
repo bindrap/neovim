@@ -83,10 +83,8 @@ require("lazy").setup({
     {
       "neovim/nvim-lspconfig",
       config = function()
-        local lspconfig = require("lspconfig")
-
-        lspconfig.pyright.setup({})
-        lspconfig.lua_ls.setup({
+        vim.lsp.config("pyright", {})
+        vim.lsp.config("lua_ls", {
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
@@ -95,6 +93,8 @@ require("lazy").setup({
             }
           }
         })
+        vim.lsp.enable("pyright")
+        vim.lsp.enable("lua_ls")
       end,
     },
 
@@ -311,6 +311,192 @@ require("lazy").setup({
         require("telescope").load_extension("fzf")
       end,
     },
+
+    -- ✅ Sidebar (LSP symbol navigator)
+    {
+      "sidebar-nvim/sidebar.nvim",
+      config = function()
+        require("sidebar-nvim").setup({
+          open = false,
+          side = "right",
+          sections = { "datetime", "git", "diagnostics", "symbols" },
+        })
+        vim.keymap.set("n", "<leader>ss", "<cmd>SidebarNvimToggle<cr>", { desc = "Toggle Sidebar" })
+      end,
+    },
+
+    -- ✅ Indent guides (visualize indentation)
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      main = "ibl",
+      config = function()
+        require("ibl").setup({
+          indent = { char = "│" },
+          scope = { enabled = true, show_start = true, show_end = true },
+        })
+      end,
+    },
+
+    -- ✅ Color highlighter (show colors in code)
+    {
+      "norcalli/nvim-colorizer.lua",
+      config = function()
+        require("colorizer").setup()
+      end,
+    },
+
+    -- ✅ Smooth scrolling
+    {
+      "karb94/neoscroll.nvim",
+      config = function()
+        require("neoscroll").setup()
+      end,
+    },
+
+    -- ✅ Dashboard (startup screen with custom ASCII art)
+    {
+      "goolord/alpha-nvim",
+      config = function()
+        local alpha = require("alpha")
+        local dashboard = require("alpha.themes.dashboard")
+
+        dashboard.section.header.val = {
+          "                                                                                      .                         .",
+          "   ....   :+**+:   ....                                                               @:                      ::",
+          "  .-=.     -*#-     .=-.                                                               .@.       .--:        .@ ",
+          ".-*=.      :*#:      .=*=.                 ███╗   ██╗███████╗ ██████╗                   -@: .%@@@@@@@@@@@*  -@. ",
+          ":*#-.      :*#-       .-#*:.               ████╗  ██║██╔════╝██╔═══██╗                   .@@@%.         :@@@@   ",
+          "*##-.      :*#-        .-*#*:.             ██╔██╗ ██║█████╗  ██║   ██║                   @@@@@@-       =@@@@@*  ",
+          "*##=.      :*#-        .=##*-.             ██║╚██╗██║██╔══╝  ██║   ██║                  @@.   :%@@@@@@@%.   :@@ ",
+          ".-*##+.    :*#-      .+##*-.               ██║ ╚████║███████╗╚██████╔╝                 =@=                   +@=",
+          "   -###+.. :*#-   ..+###=.                 ╚═╝  ╚═══╝╚══════╝ ╚═════╝                  @@.                    @@",
+          "    .-*##+::*#- .:+##*=                    ██╗   ██╗██╗███╗   ███╗                     @@         @@@         @@",
+          "      .-*##+*#-:+##*-.                     ██║   ██║██║████╗ ████║                     @@          :          @@",
+          "        .-##*##*###-.                      ██║   ██║██║██╔████╔██║                     -@:                   -@#",
+          "          .-######=.                       ╚██╗ ██╔╝██║██║╚██╔╝██║                       @@.                 :@@ ",
+          "          .=######=.                        ╚████╔╝ ██║██║ ╚═╝ ██║                       %@:               =@@  ",
+          "        .=##########=.                       ╚═══╝  ╚═╝╚═╝     ╚═╝                        =@@:           -@@+   ",
+          "      .=####=-*#-=####=.                                                                    -@@@@+---*@@@@-     ",
+          "    .-####+. :*#: .=####-.                                                                      :*@@@%-         ",
+          "  .-*##*=.   :*#:   .=*###-.                                                                      =@%           ",
+          ".-*###-..    :*#:    ..-*##*-.                                                                    +@@           ",
+          "*###-.       :*#:       .:####-                                                        +@@@@@@@@@@@@@@@@@@@@@@@@@+  ",
+          "*##*:.       :*#:        .+##*-.                                                       .:::::::::-@@@#*******#%.    ",
+          ".-*##*:.     :*#:     .:+##*-.                                                                    =@%               ",
+          " ..-###+:.   :*#:   ..+###=..                                                                     +@%               ",
+          "     -###*.  :*#:  .*###=.                                                                        *@%               ",
+          "      .=###+.:*#:.+###=.                                                                          +@*               ",
+          "        .=###+##+###=.                                                                            #@=               ",
+          "          .=######=.                                                                     .%@@@@@: #@= .*@@@%.             ",
+          "            .+##+.                                                                      @@      -@@@@@=     +@:           ",
+          "              ::                                                                       -.         @@%         #           ",
+          "",
+          "                                               ੴ                                                               ",
+          "                  Brand of Sacrifice (Berserk) - NEOVIM - Monas Hieroglyphica - Ek Onkar                      ",
+        }
+
+        dashboard.section.buttons.val = {
+          dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+          dashboard.button("n", "  New note", ":lua require('telekasten').new_note()<CR>"),
+          dashboard.button("t", "  Today's note", ":lua require('telekasten').goto_today()<CR>"),
+          dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+          dashboard.button("c", "  Config", ":e ~/.config/nvim/init.lua<CR>"),
+          dashboard.button("q", "  Quit", ":qa<CR>"),
+        }
+
+        alpha.setup(dashboard.config)
+      end,
+    },
+
+    -- ✅ Better UI components
+    {
+      "stevearc/dressing.nvim",
+      config = function()
+        require("dressing").setup({
+          input = { enabled = true },
+          select = { enabled = true, backend = { "telescope", "builtin" } },
+        })
+      end,
+    },
+
+    -- ✅ Notifications (pretty popups)
+    {
+      "rcarriga/nvim-notify",
+      config = function()
+        vim.notify = require("notify")
+        require("notify").setup({
+          stages = "fade",
+          timeout = 3000,
+          background_colour = "#000000",
+        })
+      end,
+    },
+
+    -- ✅ Buffer tabs (shows open files as tabs)
+    {
+      "akinsho/bufferline.nvim",
+      dependencies = "nvim-tree/nvim-web-devicons",
+      config = function()
+        require("bufferline").setup({
+          options = {
+            mode = "buffers",
+            diagnostics = "nvim_lsp",
+            show_buffer_close_icons = true,
+            show_close_icon = false,
+            separator_style = "slant",
+          },
+        })
+        -- Buffer navigation
+        vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { silent = true })
+        vim.keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { silent = true })
+        vim.keymap.set("n", "<leader>bd", ":bdelete<CR>", { desc = "Close buffer" })
+      end,
+    },
+
+    -- ✅ Highlight word under cursor
+    {
+      "RRethy/vim-illuminate",
+      config = function()
+        require("illuminate").configure({
+          delay = 200,
+          under_cursor = true,
+        })
+      end,
+    },
+
+    -- ✅ Autopairs (auto-close brackets, quotes)
+    {
+      "windwp/nvim-autopairs",
+      config = function()
+        require("nvim-autopairs").setup({})
+        -- Integrate with nvim-cmp
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        local cmp = require("cmp")
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end,
+    },
+
+    -- ✅ Todo comments highlighting
+    {
+      "folke/todo-comments.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("todo-comments").setup()
+        vim.keymap.set("n", "<leader>ft", ":TodoTelescope<CR>", { desc = "Find todos" })
+      end,
+    },
+
+    -- ✅ Better markdown bullet handling
+    {
+      "dkarter/bullets.vim",
+      ft = { "markdown", "text" },
+    },
+
+    -- ✅ Markdown folding/collapsing
+    {
+      "masukomi/vim-markdown-folding",
+      ft = "markdown",
+    },
   },
 })
 
@@ -321,3 +507,19 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.conceallevel = 2  -- Required for Obsidian.nvim UI features
+
+-- Markdown folding settings
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false  -- Don't fold by default
+vim.opt.foldlevel = 99
+
+-- Markdown-specific settings
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.foldenable = true
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "MarkdownFold()"
+  end,
+})
