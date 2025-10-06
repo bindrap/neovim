@@ -23,6 +23,7 @@ This script installs and configures:
 - ✅ **Markdown preview** (markdown-preview.nvim, glow.nvim)
 - ✅ **Obsidian integration** (obsidian.nvim - graph view)
 - ✅ **Faster fuzzy search** (telescope-fzf-native)
+- ✅ **Kanban board** (super-kanban.nvim - project management)
 
 ## Prerequisites
 
@@ -104,7 +105,7 @@ All notes are stored in `~/Documents/Notes` and can be synced with Nextcloud/Obs
 - **Space + zg** - Search text in notes (grep)
 - **Space + zz** - Follow link under cursor
 - **Space + zn** - Create new note
-- **Space + zT** - Go to today's daily note
+- **Space + zt** - Go to today's daily note
 - **Space + zW** - Go to this week's weekly note
 - **Space + zc** - Show calendar
 - **Space + zb** - Show backlinks (what links to this note)
@@ -119,6 +120,20 @@ Since notes are plain Markdown in `~/Documents/Notes`:
 1. Open the folder in Obsidian to see the graph view
 2. Or use Logseq for graph visualization
 3. Your notes remain portable and accessible anywhere!
+
+### Kanban Project Management (Super-Kanban)
+
+Manage your projects and tasks with an integrated kanban board stored in `~/.kanban/`.
+
+**Keybindings:**
+- **Space + kb** - Open kanban board
+
+**Features:**
+- Create multiple project boards
+- Organize tasks across columns
+- Navigate between boards with Telescope
+- Keyboard-centric workflow
+- Minimal and customizable interface
 
 ### Installing Additional Language Servers
 

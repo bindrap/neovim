@@ -142,7 +142,7 @@ require("lazy").setup({
       config = function()
         require("catppuccin").setup({
           flavour = "mocha", -- latte, frappe, macchiato, mocha
-          transparent_background = false,
+          transparent_background = true,
           integrations = {
             treesitter = true,
             telescope = true,
@@ -193,7 +193,7 @@ require("lazy").setup({
       "renerocksai/telekasten.nvim",
       dependencies = { "nvim-telescope/telescope.nvim" },
       config = function()
-        local home = vim.fn.expand("~/Documents/Notes")
+        local home = "/home/parteek/Documents/Notes"
         require("telekasten").setup({
           home = home,
           -- Daily notes
@@ -232,7 +232,7 @@ require("lazy").setup({
         vim.keymap.set("n", "<leader>zd", tk.find_daily_notes, { desc = "Find daily notes" })
         vim.keymap.set("n", "<leader>zg", tk.search_notes, { desc = "Search in notes" })
         vim.keymap.set("n", "<leader>zz", tk.follow_link, { desc = "Follow link" })
-        vim.keymap.set("n", "<leader>zT", tk.goto_today, { desc = "Go to today's note" })
+        vim.keymap.set("n", "<leader>zt", tk.goto_today, { desc = "Go to today's note" })
         vim.keymap.set("n", "<leader>zW", tk.goto_thisweek, { desc = "Go to this week's note" })
         vim.keymap.set("n", "<leader>zn", tk.new_note, { desc = "New note" })
         vim.keymap.set("n", "<leader>zc", tk.show_calendar, { desc = "Show calendar" })
@@ -288,7 +288,7 @@ require("lazy").setup({
         workspaces = {
           {
             name = "notes",
-            path = "~/Documents/Notes",
+            path = "/home/parteek/Documents/Notes",
           },
         },
         -- Disable most obsidian.nvim features since we use Telekasten
@@ -353,7 +353,7 @@ require("lazy").setup({
       end,
     },
 
-    -- ✅ Dashboard (startup screen with custom ASCII art)
+    -- ✅ Dashboard (startup screen)
     {
       "goolord/alpha-nvim",
       config = function()
@@ -361,38 +361,16 @@ require("lazy").setup({
         local dashboard = require("alpha.themes.dashboard")
 
         dashboard.section.header.val = {
-          "                                                                                      .                         .",
-          "   ....   :+**+:   ....                                                               @:                      ::",
-          "  .-=.     -*#-     .=-.                                                               .@.       .--:        .@ ",
-          ".-*=.      :*#:      .=*=.                 ███╗   ██╗███████╗ ██████╗                   -@: .%@@@@@@@@@@@*  -@. ",
-          ":*#-.      :*#-       .-#*:.               ████╗  ██║██╔════╝██╔═══██╗                   .@@@%.         :@@@@   ",
-          "*##-.      :*#-        .-*#*:.             ██╔██╗ ██║█████╗  ██║   ██║                   @@@@@@-       =@@@@@*  ",
-          "*##=.      :*#-        .=##*-.             ██║╚██╗██║██╔══╝  ██║   ██║                  @@.   :%@@@@@@@%.   :@@ ",
-          ".-*##+.    :*#-      .+##*-.               ██║ ╚████║███████╗╚██████╔╝                 =@=                   +@=",
-          "   -###+.. :*#-   ..+###=.                 ╚═╝  ╚═══╝╚══════╝ ╚═════╝                  @@.                    @@",
-          "    .-*##+::*#- .:+##*=                    ██╗   ██╗██╗███╗   ███╗                     @@         @@@         @@",
-          "      .-*##+*#-:+##*-.                     ██║   ██║██║████╗ ████║                     @@          :          @@",
-          "        .-##*##*###-.                      ██║   ██║██║██╔████╔██║                     -@:                   -@#",
-          "          .-######=.                       ╚██╗ ██╔╝██║██║╚██╔╝██║                       @@.                 :@@ ",
-          "          .=######=.                        ╚████╔╝ ██║██║ ╚═╝ ██║                       %@:               =@@  ",
-          "        .=##########=.                       ╚═══╝  ╚═╝╚═╝     ╚═╝                        =@@:           -@@+   ",
-          "      .=####=-*#-=####=.                                                                    -@@@@+---*@@@@-     ",
-          "    .-####+. :*#: .=####-.                                                                      :*@@@%-         ",
-          "  .-*##*=.   :*#:   .=*###-.                                                                      =@%           ",
-          ".-*###-..    :*#:    ..-*##*-.                                                                    +@@           ",
-          "*###-.       :*#:       .:####-                                                        +@@@@@@@@@@@@@@@@@@@@@@@@@+  ",
-          "*##*:.       :*#:        .+##*-.                                                       .:::::::::-@@@#*******#%.    ",
-          ".-*##*:.     :*#:     .:+##*-.                                                                    =@%               ",
-          " ..-###+:.   :*#:   ..+###=..                                                                     +@%               ",
-          "     -###*.  :*#:  .*###=.                                                                        *@%               ",
-          "      .=###+.:*#:.+###=.                                                                          +@*               ",
-          "        .=###+##+###=.                                                                            #@=               ",
-          "          .=######=.                                                                     .%@@@@@: #@= .*@@@%.             ",
-          "            .+##+.                                                                      @@      -@@@@@=     +@:           ",
-          "              ::                                                                       -.         @@%         #           ",
           "",
-          "                                               ੴ                                                               ",
-          "                  Brand of Sacrifice (Berserk) - NEOVIM - Monas Hieroglyphica - Ek Onkar                      ",
+          "    ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗",
+          "    ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║",
+          "    ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║",
+          "    ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║",
+          "    ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║",
+          "    ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝",
+          "",
+          "              Parteek's Config v1.3",
+          "",
         }
 
         dashboard.section.buttons.val = {
@@ -492,11 +470,18 @@ require("lazy").setup({
       ft = { "markdown", "text" },
     },
 
-    -- ✅ Markdown folding/collapsing
+    -- ✅ Kanban board picker (markdown-based)
     {
-      "masukomi/vim-markdown-folding",
-      ft = "markdown",
+      "nvim-lua/plenary.nvim",
+      lazy = false,
+      config = function()
+        -- Load board picker
+        dofile(vim.fn.expand('~/Documents/Notes/Lua/kanban-board-picker.lua'))
+        -- Load jiu jitsu note picker
+        dofile(vim.fn.expand('~/Documents/Notes/Lua/jiu-jitsu-note-picker.lua'))
+      end,
     },
+
   },
 })
 
@@ -507,19 +492,111 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.conceallevel = 2  -- Required for Obsidian.nvim UI features
+vim.opt.swapfile = false  -- Disable swap files
 
--- Markdown folding settings
+-- Markdown folding settings (using treesitter)
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = false  -- Don't fold by default
+vim.opt.foldenable = false  -- Don't fold by default for non-markdown
 vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99  -- Start with folds open
 
--- Markdown-specific settings
+-- Bullets.vim configuration
+vim.g.bullets_enabled_file_types = { 'markdown', 'text', 'gitcommit' }
+vim.g.bullets_enable_in_empty_buffers = 0
+vim.g.bullets_nested_checkboxes = 1
+
+-- Custom fold expression for markdown (Obsidian-like)
+function _G.MarkdownFoldExpr()
+  local lnum = vim.v.lnum
+  local line = vim.fn.getline(lnum)
+  local nextline = vim.fn.getline(lnum + 1)
+
+  -- Headings create folds
+  local heading = line:match("^(#+)%s")
+  if heading then
+    return ">" .. tostring(#heading)
+  end
+
+  -- Empty lines have no fold
+  if line:match("^%s*$") then
+    return "0"
+  end
+
+  -- Get current line's indent level (matches bullets, numbered lists, and checkboxes)
+  local curr_indent = line:match("^(%s*)[-%*+]%s") or line:match("^(%s*)%d+%.%s") or line:match("^(%s*)%[.%]%s")
+
+  if curr_indent then
+    local curr_level = math.floor(#curr_indent / 2) + 1
+
+    -- Check next line
+    local next_indent = nextline:match("^(%s*)[-%*+]%s") or nextline:match("^(%s*)%d+%.%s") or nextline:match("^(%s*)%[.%]%s")
+    local is_next_empty = nextline:match("^%s*$")
+    local is_next_heading = nextline:match("^#+%s")
+
+    -- If next line is more indented, start a fold at current level
+    if next_indent and #next_indent > #curr_indent then
+      return ">" .. tostring(curr_level)
+    end
+
+    -- If next line is same or less indented, empty, or heading - stay at current level
+    return tostring(curr_level)
+  end
+
+  return "="
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
-    vim.opt_local.foldenable = true
     vim.opt_local.foldmethod = "expr"
-    vim.opt_local.foldexpr = "MarkdownFold()"
+    vim.opt_local.foldexpr = "v:lua.MarkdownFoldExpr()"
+    vim.opt_local.foldenable = true
+    vim.opt_local.foldlevel = 99  -- Start with all folds open
+
+    -- Tab to indent list items (insert mode)
+    vim.keymap.set("i", "<Tab>", function()
+      local line = vim.api.nvim_get_current_line()
+      if line:match("^%s*[-*+]%s") or line:match("^%s*%d+%.%s") then
+        return "<C-t>"
+      else
+        return "<Tab>"
+      end
+    end, { buffer = true, expr = true })
+
+    -- Shift-Tab to dedent list items (insert mode)
+    vim.keymap.set("i", "<S-Tab>", function()
+      local line = vim.api.nvim_get_current_line()
+      if line:match("^%s*[-*+]%s") or line:match("^%s*%d+%.%s") then
+        return "<C-d>"
+      else
+        return "<S-Tab>"
+      end
+    end, { buffer = true, expr = true })
+
+    -- Tab in normal/visual mode for indenting
+    vim.keymap.set("n", "<Tab>", ">>", { buffer = true })
+    vim.keymap.set("n", "<S-Tab>", "<<", { buffer = true })
+    vim.keymap.set("v", "<Tab>", ">gv", { buffer = true })
+    vim.keymap.set("v", "<S-Tab>", "<gv", { buffer = true })
+  end,
+})
+
+-- Auto-insert kanban template for new .md files in .notes folder
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*/Documents/Notes/.notes/*.md",
+  callback = function()
+    local lines = {
+      "## Backlog",
+      "",
+      "## Todo",
+      "",
+      "## In Progress",
+      "",
+      "## Review",
+      "",
+      "## Done",
+    }
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
   end,
 })
