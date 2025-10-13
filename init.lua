@@ -476,9 +476,9 @@ require("lazy").setup({
       lazy = false,
       config = function()
         -- Load board picker
-        dofile(vim.fn.expand('~/Documents/Notes/Lua/kanban-board-picker.lua'))
+        require('kanban-board-picker')
         -- Load jiu jitsu note picker
-        dofile(vim.fn.expand('~/Documents/Notes/Lua/jiu-jitsu-note-picker.lua'))
+        require('jiu-jitsu-note-picker')
       end,
     },
 
@@ -600,3 +600,6 @@ vim.api.nvim_create_autocmd("BufNewFile", {
     vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
   end,
 })
+
+-- Load custom keymaps
+require('wishlist')
