@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/bindrap/.config/nvim/lua/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

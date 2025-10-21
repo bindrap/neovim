@@ -24,6 +24,7 @@ This script installs and configures:
 - ✅ **Obsidian integration** (obsidian.nvim - graph view)
 - ✅ **Faster fuzzy search** (telescope-fzf-native)
 - ✅ **Kanban board** (super-kanban.nvim - project management)
+- ✅ **Custom Fuzzy Finder** (Parteek's FuzzyFinder v1 - case-insensitive search)
 
 ## Prerequisites
 
@@ -82,6 +83,17 @@ Or simply restart your terminal.
 nvim
 ```
 
+### Quick Access to Notes
+
+Open Neovim directly in your Obsidian Vault:
+```bash
+notes
+```
+
+This alias automatically:
+1. Changes to your Obsidian Vault directory
+2. Opens Neovim ready for note-taking
+
 ### 📖 Complete Controls Guide
 
 **See [CONTROLS.md](CONTROLS.md) for a comprehensive guide to all keybindings and commands!**
@@ -93,6 +105,7 @@ nvim
 - **Tab** - Navigate autocomplete menu / Jump to next snippet field
 - **Enter** - Confirm autocomplete selection
 - **Space** (then wait) - Show all available keybindings
+- **Space + f** - Open Parteek's FuzzyFinder (search in file, across files, or find files by name)
 
 ### Zettelkasten Note-Taking (Telekasten)
 
