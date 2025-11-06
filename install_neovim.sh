@@ -2,6 +2,8 @@
 
 # Neovim Installation Script with Plugin Setup
 # This script installs Neovim and sets up all configured plugins
+# Usage: curl -fsSL https://raw.githubusercontent.com/bindrap/neovim/main/install_neovim.sh | bash
+# Or: ./install_neovim.sh
 
 set -e  # Exit on any error
 
@@ -37,32 +39,68 @@ fi
 
 print_info "Starting Neovim installation and configuration..."
 
-# 1. Install Neovim
+# Determine script directory and config location
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_URL="https://github.com/bindrap/neovim.git"
+
+# 1. Check for required tools
+print_info "Checking prerequisites..."
+
+if ! command -v git &> /dev/null; then
+    print_error "Git is required but not installed. Please install git first."
+    exit 1
+fi
+
+if ! command -v curl &> /dev/null; then
+    print_error "Curl is required but not installed. Please install curl first."
+    exit 1
+fi
+
+# 2. Determine architecture
+ARCH=$(uname -m)
+if [[ "$ARCH" == "x86_64" ]]; then
+    NVIM_TARBALL="nvim-linux-x86_64.tar.gz"
+    NVIM_DIR="nvim-linux-x86_64"
+elif [[ "$ARCH" == "aarch64" || "$ARCH" == "arm64" ]]; then
+    NVIM_TARBALL="nvim-linux-arm64.tar.gz"
+    NVIM_DIR="nvim-linux-arm64"
+else
+    print_error "Unsupported architecture: $ARCH"
+    exit 1
+fi
+
+print_info "Detected architecture: $ARCH"
+
+# 3. Install Neovim
 print_info "Installing Neovim..."
 
 # Remove existing installation if present
-if [ -d "/opt/nvim-linux-x86_64" ]; then
+if [ -d "/opt/$NVIM_DIR" ]; then
     print_warning "Removing existing Neovim installation..."
-    sudo rm -rf /opt/nvim-linux-x86_64
+    sudo rm -rf /opt/$NVIM_DIR
 fi
 
 # Download and install Neovim
-print_info "Downloading Neovim..."
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+print_info "Downloading Neovim ($NVIM_TARBALL)..."
+curl -LO "https://github.com/neovim/neovim/releases/latest/download/$NVIM_TARBALL"
 
 print_info "Extracting Neovim to /opt..."
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+sudo tar -C /opt -xzf "$NVIM_TARBALL"
 
 # Clean up downloaded file
-rm nvim-linux-x86_64.tar.gz
+rm "$NVIM_TARBALL"
 
-# 2. Add Neovim to PATH
+# 4. Add Neovim to PATH
 print_info "Adding Neovim to PATH..."
+
+NVIM_PATH="/opt/$NVIM_DIR/bin"
 
 # Add to bashrc if it exists
 if [ -f ~/.bashrc ]; then
-    if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.bashrc; then
-        echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
+    # Remove old paths first
+    sed -i '/nvim-linux.*\/bin/d' ~/.bashrc
+    if ! grep -q "$NVIM_PATH" ~/.bashrc; then
+        echo "export PATH=\"\$PATH:$NVIM_PATH\"" >> ~/.bashrc
         print_success "Added Neovim to PATH in ~/.bashrc"
     else
         print_info "Neovim already in PATH (~/.bashrc)"
@@ -71,8 +109,10 @@ fi
 
 # Add to zshrc if it exists
 if [ -f ~/.zshrc ]; then
-    if ! grep -q "/opt/nvim-linux-x86_64/bin" ~/.zshrc; then
-        echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.zshrc
+    # Remove old paths first
+    sed -i '/nvim-linux.*\/bin/d' ~/.zshrc
+    if ! grep -q "$NVIM_PATH" ~/.zshrc; then
+        echo "export PATH=\"\$PATH:$NVIM_PATH\"" >> ~/.zshrc
         print_success "Added Neovim to PATH in ~/.zshrc"
     else
         print_info "Neovim already in PATH (~/.zshrc)"
@@ -80,34 +120,71 @@ if [ -f ~/.zshrc ]; then
 fi
 
 # Also add to current session
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export PATH="$PATH:$NVIM_PATH"
 
-# 3. Set up Neovim configuration directory
+# 5. Set up Neovim configuration directory
 print_info "Setting up Neovim configuration..."
 
+# Determine config source location
+CONFIG_SOURCE=""
+
+# Check if we're running from the repo directory
+if [ -f "$SCRIPT_DIR/init.lua" ] && [ -d "$SCRIPT_DIR/lua" ]; then
+    CONFIG_SOURCE="$SCRIPT_DIR"
+    print_info "Using configuration from: $CONFIG_SOURCE"
+else
+    # Clone the repo to a temporary location
+    print_info "Configuration files not found locally. Cloning repository..."
+    TEMP_DIR=$(mktemp -d)
+    git clone "$REPO_URL" "$TEMP_DIR"
+    CONFIG_SOURCE="$TEMP_DIR"
+    print_success "Repository cloned to: $CONFIG_SOURCE"
+fi
+
+# Backup existing config if present
+BACKUP_DIR=""
+if [ -d ~/.config/nvim ]; then
+    BACKUP_DIR=~/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)
+    print_warning "Existing Neovim config found. Creating backup at: $BACKUP_DIR"
+    mv ~/.config/nvim "$BACKUP_DIR"
+fi
+
 # Create config directory
-mkdir -p ~/.config/nvim/lua
+mkdir -p ~/.config/nvim
 
 # Copy configuration files
 print_info "Copying configuration files..."
-cp init.lua ~/.config/nvim/
 
-# 4. Install prerequisites
-print_info "Installing prerequisites..."
-
-# Check if git is installed
-if ! command -v git &> /dev/null; then
-    print_error "Git is required but not installed. Please install git first."
+if [ -f "$CONFIG_SOURCE/init.lua" ]; then
+    cp "$CONFIG_SOURCE/init.lua" ~/.config/nvim/
+    print_success "Copied init.lua"
+else
+    print_error "init.lua not found in $CONFIG_SOURCE"
     exit 1
 fi
 
-# Check if curl is installed
-if ! command -v curl &> /dev/null; then
-    print_error "Curl is required but not installed. Please install curl first."
-    exit 1
+if [ -d "$CONFIG_SOURCE/lua" ]; then
+    cp -r "$CONFIG_SOURCE/lua" ~/.config/nvim/
+    print_success "Copied lua/ directory"
+else
+    print_warning "lua/ directory not found, creating empty directory"
+    mkdir -p ~/.config/nvim/lua
 fi
 
-# 5. Install language servers and tools via system package manager (optional)
+if [ -f "$CONFIG_SOURCE/lazy-lock.json" ]; then
+    cp "$CONFIG_SOURCE/lazy-lock.json" ~/.config/nvim/
+    print_success "Copied lazy-lock.json (ensures consistent plugin versions)"
+else
+    print_warning "lazy-lock.json not found, plugins will use latest versions"
+fi
+
+# Clean up temp directory if we cloned
+if [ "$CONFIG_SOURCE" != "$SCRIPT_DIR" ]; then
+    rm -rf "$CONFIG_SOURCE"
+    print_info "Cleaned up temporary files"
+fi
+
+# 6. Install language servers and tools via system package manager (optional)
 print_info "Installing language servers and development tools..."
 
 # Detect package manager and install tools
@@ -133,7 +210,7 @@ fi
 # Mason will handle LSP installation inside Neovim
 print_info "Python language servers will be installed via Mason in Neovim"
 
-# 6. Start Neovim to trigger plugin installation
+# 7. Start Neovim to trigger plugin installation
 print_info "Starting Neovim to install plugins..."
 print_warning "Neovim will start and install plugins automatically."
 print_warning "This may take a few minutes. Please wait for the installation to complete."
@@ -144,7 +221,7 @@ nvim --headless "+Lazy! sync" +qa
 
 print_success "Plugin installation completed!"
 
-# 7. Install Mason tools
+# 8. Install Mason tools
 print_info "Installing Mason language servers and tools..."
 print_info "Starting Neovim to install Mason packages..."
 
@@ -153,7 +230,7 @@ nvim --headless -c "MasonInstall pyright lua-language-server" -c "qa"
 
 print_success "Mason tools installation completed!"
 
-# 8. Final steps
+# 9. Final steps
 print_info "Installation completed successfully!"
 print_success "Neovim is now installed with the following features:"
 echo "  ✅ Syntax highlighting (nvim-treesitter)"
@@ -181,5 +258,10 @@ echo "  4. Open a directory with: nvim ~/your-directory"
 
 print_warning "Note: Some plugins may require additional setup or language servers."
 print_info "You can install additional language servers using :Mason in Neovim."
+
+if [ -n "$BACKUP_DIR" ]; then
+    echo ""
+    print_info "Your previous config was backed up to: $BACKUP_DIR"
+fi
 
 print_success "Happy coding with Neovim! 🚀"
