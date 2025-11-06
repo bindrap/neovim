@@ -2,7 +2,7 @@
 
 # Neovim Installation Script with Plugin Setup
 # This script installs Neovim and sets up all configured plugins
-# Usage: curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/install_neovim.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/bindrap/neovim/main/install_neovim.sh | bash
 # Or: ./install_neovim.sh
 
 set -e  # Exit on any error
@@ -41,7 +41,7 @@ print_info "Starting Neovim installation and configuration..."
 
 # Determine script directory and config location
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_URL="https://github.com/bindrap/neovim.git"  # Change this to your repo URL
+REPO_URL="https://github.com/bindrap/neovim.git"
 
 # 1. Check for required tools
 print_info "Checking prerequisites..."

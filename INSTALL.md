@@ -18,8 +18,8 @@ cd neovim
 ### Method 2: One-line remote install
 
 ```bash
-# Download and run directly (make sure to update the URL in the script first)
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/install_neovim.sh | bash
+# Download and run directly from GitHub
+curl -fsSL https://raw.githubusercontent.com/bindrap/neovim/main/install_neovim.sh | bash
 ```
 
 ## What the script does
@@ -104,16 +104,12 @@ nvim
 
 ## Customization
 
-Before running the script, you can customize:
+You can customize the script before running:
 
-1. **Repository URL** (line 44 in the script):
+1. **Mason LSP servers** (line 228 in the script):
+   Add more language servers to auto-install:
    ```bash
-   REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
-   ```
-
-2. **Mason LSP servers** (line 228 in the script):
-   ```bash
-   nvim --headless -c "MasonInstall pyright lua-language-server typescript-language-server" -c "qa"
+   nvim --headless -c "MasonInstall pyright lua-language-server typescript-language-server rust-analyzer" -c "qa"
    ```
 
 ## Features Included
