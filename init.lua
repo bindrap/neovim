@@ -369,7 +369,7 @@ require("lazy").setup({
           "    ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║",
           "    ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝",
           "",
-          "              Parteek's Config v1.3",
+          "              Parteek's Config v2.0",
           "",
         }
 
@@ -604,3 +604,4 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 -- Load custom keymaps
 require('wishlist')
 require('fuzzy-finder')
+require('help-viewer')

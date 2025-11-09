@@ -1,6 +1,6 @@
-# Neovim + Telekasten Controls Guide
+# Parteek's Config v2.0 - Controls Guide
 
-Quick reference for all keybindings and commands in your Neovim setup.
+Quick reference for all keybindings and commands in your custom Neovim setup.
 
 ---
 
@@ -46,6 +46,17 @@ Space + ca       - Code actions
 - [Custom Features](#custom-features)
 - [Autocomplete](#autocomplete)
 - [Useful Commands](#useful-commands)
+
+---
+
+## ⚡ Quick Help
+
+**View this guide anytime:**
+```
+Space + h h      - Show this CONTROLS.md guide in split window
+:Help            - Same as above (custom command)
+```
+Opens in a vertical split with markdown highlighting. Press `q` to close.
 
 ---
 
@@ -565,11 +576,12 @@ Which-key will show you context-aware options.
 
 ## Getting Help
 
-- **In Neovim:** `:help` or `:help <command>`
-- **Which-key popup:** Press `Space` and wait
-- **Telescope help:** `:Telescope help_tags`
-- **LSP info:** `:LspInfo`
-- **Check health:** `:checkhealth`
+- **Custom controls guide:** `Space + h h` or `:Help` - Shows this CONTROLS.md file
+- **In Neovim:** `:help` or `:help <command>` - Official Neovim documentation
+- **Which-key popup:** Press `Space` and wait - See context-aware keybindings
+- **Telescope help:** `:Telescope help_tags` - Search all help topics
+- **LSP info:** `:LspInfo` - Language server status
+- **Check health:** `:checkhealth` - Diagnostic health check
 
 ---
 
