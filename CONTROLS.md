@@ -18,6 +18,17 @@ Quick reference for all keybindings and commands in your Neovim setup.
 
 ---
 
+## ⚡ Quick Help
+
+**View this guide anytime:**
+```
+Space + h h      - Show this CONTROLS.md guide in split window
+:Help            - Same as above (custom command)
+```
+Opens in a vertical split with markdown highlighting. Press `q` to close.
+
+---
+
 ## Basic Neovim Navigation
 
 ### Modes
@@ -436,11 +447,12 @@ Space (then wait 1 second)
 
 ## Getting Help
 
-- **In Neovim:** `:help` or `:help <command>`
-- **Which-key popup:** Press `Space` and wait
-- **Telescope help:** `:Telescope help_tags`
-- **LSP info:** `:LspInfo`
-- **Check health:** `:checkhealth`
+- **Custom controls guide:** `Space + h h` or `:Help` - Shows this CONTROLS.md file
+- **In Neovim:** `:help` or `:help <command>` - Official Neovim documentation
+- **Which-key popup:** Press `Space` and wait - See context-aware keybindings
+- **Telescope help:** `:Telescope help_tags` - Search all help topics
+- **LSP info:** `:LspInfo` - Language server status
+- **Check health:** `:checkhealth` - Diagnostic health check
 
 ---
 
