@@ -38,7 +38,7 @@ M.show_controls = function()
   -- Add a mapping to close with 'q'
   vim.keymap.set('n', 'q', ':q<CR>', { buffer = true, silent = true })
 
-  vim.notify('📖 Controls Guide (press q to close)', vim.log.levels.INFO)
+  vim.notify('📖 Parteek\'s Config v2.0 (press q to close)', vim.log.levels.INFO)
 end
 
 -- Keybinding: Space + h h

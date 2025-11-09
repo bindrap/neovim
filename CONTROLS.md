@@ -1,6 +1,6 @@
-# Neovim + Telekasten Controls Guide
+# Parteek's Config v2.0 - Controls Guide
 
-Quick reference for all keybindings and commands in your Neovim setup.
+Quick reference for all keybindings and commands in your custom Neovim setup.
 
 ---
 
