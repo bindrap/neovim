@@ -603,4 +603,4 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 -- Load custom keymaps
 require('wishlist')
-require('fuzzy-finder')
+-- require('fuzzy-finder')  -- Commented out: file doesn't exist
