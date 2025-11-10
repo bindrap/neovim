@@ -264,4 +264,13 @@ if [ -n "$BACKUP_DIR" ]; then
     print_info "Your previous config was backed up to: $BACKUP_DIR"
 fi
 
+echo ""
+print_info "Troubleshooting tips:"
+echo "  - For LuaSnip 'local changes' errors, clean plugin cache:"
+echo "    rm -rf ~/.local/share/nvim/lazy/LuaSnip"
+echo "  - image.nvim is disabled by default (optional - needs luarocks)"
+echo "  - For plugin errors: Open nvim and run :Lazy sync"
+echo "  - For LSP issues: Run :Mason in Neovim"
+echo "  - For health check: Run :checkhealth in Neovim"
+
 print_success "Happy coding with Neovim! 🚀"
