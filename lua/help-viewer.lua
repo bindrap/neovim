@@ -1,7 +1,7 @@
 -- Custom Help Viewer
 -- Shows CONTROLS.md in a floating popup window
 -- Usage: Space + h h  or  :Help
--- Close with: ESC, q, or :q
+-- Close with: ESC or q
 
 local M = {}
 local api = vim.api
@@ -39,14 +39,11 @@ end
 local function setup_keymaps()
   local opts = { silent = true, noremap = true, buffer = M.ui.buf }
 
-  -- Close window with q, ESC, or :q
+  -- Close window with q or ESC
   vim.keymap.set('n', 'q', function() M.close() end,
     vim.tbl_extend('force', opts, { desc = 'Close help' }))
   vim.keymap.set('n', '<Esc>', function() M.close() end,
     vim.tbl_extend('force', opts, { desc = 'Close help' }))
-
-  -- Allow :q command to close
-  vim.api.nvim_buf_create_user_command(M.ui.buf, 'q', function() M.close() end, {})
 end
 
 -- Open CONTROLS.md in a floating popup window
@@ -109,7 +106,7 @@ M.show_controls = function()
   -- Set up keybindings
   setup_keymaps()
 
-  vim.notify('Press ESC, q, or :q to close', vim.log.levels.INFO)
+  vim.notify('Press ESC or q to close', vim.log.levels.INFO)
 end
 
 -- Keybinding: Space + h h
