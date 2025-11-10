@@ -2,10 +2,12 @@
 -- Add this to your Neovim config
 
 local M = {}
+local config = require('config')
 
 M.open_note_picker = function()
-  local notes_dir = vim.fn.expand('~/Documents/Notes/jits')
-  local templates_dir = vim.fn.expand('~/Documents/Notes/templates')
+  local paths = config.get_paths()
+  local notes_dir = paths.jits
+  local templates_dir = paths.templates
 
   -- Ensure directories exist
   vim.fn.mkdir(notes_dir, 'p')
