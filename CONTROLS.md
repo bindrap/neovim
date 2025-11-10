@@ -4,6 +4,36 @@ Quick reference for all keybindings and commands in your custom Neovim setup.
 
 ---
 
+## ⚡ Quick Reference - Custom Keybindings
+
+**Leader key is `Space`**
+
+```
+Essential Commands:
+Ctrl+n           - File explorer (Neo-tree)
+Space + f        - Custom fuzzy finder menu
+Space + ww       - Open wishlist
+Space + jj       - Jiu Jitsu notes
+Space + kb       - Kanban boards
+:DailyToday      - Open today's daily note
+
+Zettelkasten:
+Space + zf       - Find notes
+Space + zn       - New note
+Space + zT       - Today's daily note
+Space + zg       - Search in notes
+Space + zz       - Follow link
+Space + zb       - Show backlinks
+
+Code Navigation:
+gd               - Go to definition
+K                - Hover documentation
+gr               - Show references
+Space + ca       - Code actions
+```
+
+---
+
 ## 📋 Table of Contents
 
 - [Basic Neovim Navigation](#basic-neovim-navigation)
@@ -13,6 +43,7 @@ Quick reference for all keybindings and commands in your custom Neovim setup.
 - [Fuzzy Finding (Telescope)](#fuzzy-finding-telescope)
 - [Git Integration (Gitsigns)](#git-integration-gitsigns)
 - [Zettelkasten (Telekasten)](#zettelkasten-telekasten)
+- [Custom Features](#custom-features)
 - [Autocomplete](#autocomplete)
 - [Useful Commands](#useful-commands)
 
@@ -297,6 +328,90 @@ Directory Structure:
 
 ---
 
+## Custom Features
+
+This config includes several custom productivity tools built specifically for your workflow.
+
+### Custom Fuzzy Finder
+**Quick multi-mode search interface**
+```
+Space + f        - Open search picker menu with options:
+                   • Search in Current File
+                   • Search Across All Files
+                   • Find Files by Name
+```
+
+After selecting a mode:
+- All searches are **case-insensitive** by default
+- Hidden files are included in searches
+- Respects `.gitignore` where appropriate
+
+### Wishlist Management
+```
+Space + ww       - Open your wishlist.md file
+```
+Located at: `~/Documents/Notes/Parteek/wishlist.md`
+
+### Jiu Jitsu Notes
+**Specialized note-taking for BJJ training**
+```
+Space + jj       - Open Jiu Jitsu note picker
+```
+
+**Note types:**
+- **Training Note** - Creates `training_MMDDYY.md` from template
+  - Auto-fills date
+  - Located in `~/Documents/Notes/jits/journal/`
+
+- **Mindset Note** - Creates numbered `mindset-001.md` entries
+  - Auto-increments numbers
+  - Located in `~/Documents/Notes/jits/mindset/`
+
+- **Custom Note** - Create any custom named note
+  - You choose the name
+  - Located in `~/Documents/Notes/jits/`
+
+### Kanban Project Boards
+**Manage projects with markdown kanban boards**
+```
+Space + kb       - Open Kanban board picker
+```
+
+**Features:**
+- Lists all project boards in `~/Documents/Notes/Personal Projects/Projects/`
+- "Personal Projects.md" always appears first
+- Create new boards on the fly
+- Default columns: Backlog → Todo → In Progress → Review → Done
+
+**To use:**
+1. Press `Space + kb`
+2. Select existing board or create new
+3. Edit markdown headers to organize tasks
+
+### Daily Note Automation
+**Smart daily notes with content rollover**
+
+Commands:
+```
+:DailyToday              - Open today's note (creates with automation)
+:DailyNew                - Force create new daily note
+:DailyImportYesterday    - Import yesterday's "Tomorrow" section
+```
+
+**How it works:**
+- When creating today's note, automatically pulls yesterday's "Tomorrow" section
+- Places it in today's "Today's Focus" section
+- Uses template from `~/Documents/Notes/templates/daily.md`
+- Notes saved in `~/Documents/Notes/daily/`
+
+**Workflow:**
+1. End each day by filling the "Tomorrow" section
+2. Next day, run `:DailyToday`
+3. Your tomorrow tasks are now in "Today's Focus"
+4. Complete the cycle by planning tomorrow again
+
+---
+
 ## Autocomplete
 
 ### During Insert Mode
@@ -423,25 +538,39 @@ Since notes are plain Markdown in `~/Documents/Notes`:
 nvim
 ```
 
-**2. Create your first note:**
+**2. Open today's daily note:**
+```
+:DailyToday
+```
+This automatically pulls yesterday's "Tomorrow" section!
+
+**3. Quick search anything:**
+```
+Space + f
+```
+Choose from: search in file, search all files, or find files by name.
+
+**4. Create a Zettelkasten note:**
 ```
 Space + zn
 ```
 
-**3. Open file explorer:**
+**5. Open file explorer:**
 ```
 Ctrl+n
 ```
 
-**4. Find files quickly:**
+**6. Manage your projects:**
 ```
-:Telescope find_files
+Space + kb
 ```
+Opens your Kanban board picker.
 
-**5. See all available commands:**
+**7. See all available commands:**
 ```
 Space (then wait 1 second)
 ```
+Which-key will show you context-aware options.
 
 ---
 

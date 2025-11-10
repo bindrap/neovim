@@ -221,14 +221,23 @@ nvim --headless "+Lazy! sync" +qa
 
 print_success "Plugin installation completed!"
 
-# 8. Install Mason tools
+# 8. Install Mason tools (optional - may fail if system dependencies are missing)
 print_info "Installing Mason language servers and tools..."
 print_info "Starting Neovim to install Mason packages..."
+print_warning "Note: This may fail if system dependencies (like Node.js libraries) are missing."
+print_warning "You can install language servers manually later using :Mason in Neovim"
 
 # Install common LSP servers and tools via Mason
-nvim --headless -c "MasonInstall pyright lua-language-server" -c "qa"
-
-print_success "Mason tools installation completed!"
+# Don't exit on error - this is optional
+set +e
+nvim --headless -c "MasonInstall pyright lua-language-server" -c "qa" 2>/dev/null
+if [ $? -eq 0 ]; then
+    print_success "Mason tools installation completed!"
+else
+    print_warning "Mason tools installation encountered errors (this is normal if Node.js/npm is not properly configured)"
+    print_info "You can install language servers manually later using :Mason in Neovim"
+fi
+set -e
 
 # 9. Final steps
 print_info "Installation completed successfully!"
@@ -272,5 +281,10 @@ echo "  - image.nvim is disabled by default (optional - needs luarocks)"
 echo "  - For plugin errors: Open nvim and run :Lazy sync"
 echo "  - For LSP issues: Run :Mason in Neovim"
 echo "  - For health check: Run :checkhealth in Neovim"
+echo "  - If you see 'libsimdjson.so' errors, update Node.js or reinstall it:"
+echo "    sudo apt update && sudo apt install --reinstall nodejs"
+echo "  - If language servers fail to install, run :Mason inside Neovim"
+echo "  - If you see plugin errors, run :Lazy sync inside Neovim"
+echo "  - For config issues, check :checkhealth in Neovim"
 
 print_success "Happy coding with Neovim! 🚀"
