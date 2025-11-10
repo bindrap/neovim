@@ -290,11 +290,17 @@ Space + zl       - Create note from visual selection
 
 ### Markdown Preview
 ```
-Space + mp       - Toggle Markdown preview in browser
+Space + mp       - Open Markdown preview in browser (converts to HTML)
+:MarkdownPreview - Same as above (opens browser preview)
 Space + mg       - Glow preview in terminal (quick view)
-:MarkdownPreview - Start preview
-:MarkdownPreviewStop - Stop preview
 ```
+
+**How it works:**
+- Converts your markdown to beautiful HTML
+- Opens automatically in your default browser
+- Supports GitHub-flavored markdown
+- Dark mode styling
+- Save file and refresh browser to see updates
 
 ### Obsidian Integration
 ```
