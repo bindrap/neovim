@@ -2,6 +2,15 @@
 
 Quick reference for all keybindings and commands in your custom Neovim setup.
 
+> **Font Note:** This guide uses Unicode characters (⚡📋🚀 and box-drawing characters).
+> If you see `?` symbols, install a font with Unicode support like:
+> - **JetBrains Mono Nerd Font** (recommended)
+> - **Hack Nerd Font**
+> - **FiraCode Nerd Font**
+>
+> Test display: ⚡ 📋 🚀 ├── └── • →
+> All characters above should display correctly.
+
 ---
 
 ## ⚡ Quick Reference - Custom Keybindings
@@ -53,10 +62,10 @@ Space + ca       - Code actions
 
 **View this guide anytime:**
 ```
-Space + h h      - Show this CONTROLS.md guide in split window
+Space + h h      - Show this CONTROLS.md guide in popup window
 :Help            - Same as above (custom command)
 ```
-Opens in a vertical split with markdown highlighting. Press `q` to close.
+Opens in a centered floating popup with markdown highlighting. Press `ESC`, `q`, or `:q` to close.
 
 ---
 
@@ -576,7 +585,7 @@ Which-key will show you context-aware options.
 
 ## Getting Help
 
-- **Custom controls guide:** `Space + h h` or `:Help` - Shows this CONTROLS.md file
+- **Custom controls guide:** `Space + h h` or `:Help` - Shows this CONTROLS.md file in popup
 - **In Neovim:** `:help` or `:help <command>` - Official Neovim documentation
 - **Which-key popup:** Press `Space` and wait - See context-aware keybindings
 - **Telescope help:** `:Telescope help_tags` - Search all help topics
