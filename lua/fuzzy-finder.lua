@@ -45,6 +45,6 @@ M.open_search_picker = function()
 end
 
 -- Keybinding
-vim.keymap.set('n', '<leader>f', M.open_search_picker, { desc = 'Open Search Picker' })
+vim.keymap.set('n', '<leader>ff', M.open_search_picker, { desc = 'Open Search Picker' })
 
 return M
