@@ -20,7 +20,7 @@ Quick reference for all keybindings and commands in your custom Neovim setup.
 ```
 Essential Commands:
 Ctrl+n           - File explorer (Neo-tree)
-Space + f        - Custom fuzzy finder menu
+Space + ff       - Custom fuzzy finder menu
 Space + ww       - Open wishlist
 Space + jj       - Jiu Jitsu notes
 Space + kb       - Kanban boards
