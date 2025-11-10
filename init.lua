@@ -524,15 +524,17 @@ vim.g.bullets_enable_in_empty_buffers = 0
 vim.g.bullets_nested_checkboxes = 1
 
 -- Custom fold expression for markdown (Obsidian-like)
+-- Folds headers by level (# to #, ## to ##) and bullets by type and indentation
 function _G.MarkdownFoldExpr()
   local lnum = vim.v.lnum
   local line = vim.fn.getline(lnum)
   local nextline = vim.fn.getline(lnum + 1)
 
-  -- Headings create folds
+  -- Headings create folds (# to next #, ## to next ##, etc.)
   local heading = line:match("^(#+)%s")
   if heading then
-    return ">" .. tostring(#heading)
+    local level = #heading
+    return ">" .. tostring(level)
   end
 
   -- Empty lines have no fold
@@ -540,26 +542,72 @@ function _G.MarkdownFoldExpr()
     return "0"
   end
 
-  -- Get current line's indent level (matches bullets, numbered lists, and checkboxes)
-  local curr_indent = line:match("^(%s*)[-%*+]%s") or line:match("^(%s*)%d+%.%s") or line:match("^(%s*)%[.%]%s")
+  -- Extract bullet info: indentation, type, and whether it's a list item
+  local function get_bullet_info(text)
+    -- Match bullet lists (-, *, +)
+    local indent, bullet = text:match("^(%s*)([-%*+])%s")
+    if indent and bullet then
+      return indent, bullet, "bullet"
+    end
+
+    -- Match numbered lists (1., 2., etc.)
+    indent = text:match("^(%s*)%d+%.%s")
+    if indent then
+      return indent, "numbered", "numbered"
+    end
+
+    -- Match checkboxes (- [ ], - [x], etc.)
+    indent, bullet = text:match("^(%s*)([-%*+])%s%[.%]%s")
+    if indent and bullet then
+      return indent, bullet, "checkbox"
+    end
+
+    return nil, nil, nil
+  end
+
+  local curr_indent, curr_type, curr_kind = get_bullet_info(line)
 
   if curr_indent then
-    local curr_level = math.floor(#curr_indent / 2) + 1
-
-    -- Check next line
-    local next_indent = nextline:match("^(%s*)[-%*+]%s") or nextline:match("^(%s*)%d+%.%s") or nextline:match("^(%s*)%[.%]%s")
+    local next_indent, next_type, next_kind = get_bullet_info(nextline)
     local is_next_empty = nextline:match("^%s*$")
     local is_next_heading = nextline:match("^#+%s")
 
-    -- If next line is more indented, start a fold at current level
+    -- Calculate fold level based on indentation (each 2 spaces = 1 level)
+    local curr_level = math.floor(#curr_indent / 2) + 1
+
+    -- Start a fold if next line is more indented with same or compatible type
     if next_indent and #next_indent > #curr_indent then
       return ">" .. tostring(curr_level)
     end
 
-    -- If next line is same or less indented, empty, or heading - stay at current level
+    -- Close fold if next line is:
+    -- - A heading
+    -- - Empty line
+    -- - Less indented
+    -- - Same indentation but different bullet type/kind
+    if is_next_heading or is_next_empty then
+      return "<" .. tostring(curr_level)
+    end
+
+    if next_indent and #next_indent == #curr_indent then
+      -- Same indentation - check if bullet type matches
+      if curr_kind ~= next_kind or curr_type ~= next_type then
+        return "<" .. tostring(curr_level)
+      end
+      -- Same type and indentation - continue fold
+      return tostring(curr_level)
+    end
+
+    if next_indent and #next_indent < #curr_indent then
+      -- Less indented - close current fold
+      return "<" .. tostring(curr_level)
+    end
+
+    -- Default: maintain current fold level
     return tostring(curr_level)
   end
 
+  -- Not a heading or list item - inherit fold from previous line
   return "="
 end
 

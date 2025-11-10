@@ -191,7 +191,70 @@ if [ "$CONFIG_SOURCE" != "$SCRIPT_DIR" ]; then
     print_info "Cleaned up temporary files"
 fi
 
-# 6. Install language servers and tools via system package manager (optional)
+# 6. Install Nerd Font for proper icon display
+print_info "Installing JetBrains Mono Nerd Font..."
+
+# Determine font directory based on OS
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    FONT_DIR="$HOME/.local/share/fonts"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    FONT_DIR="$HOME/Library/Fonts"
+else
+    print_warning "Unknown OS type, skipping font installation"
+    FONT_DIR=""
+fi
+
+if [ -n "$FONT_DIR" ]; then
+    # Create font directory
+    mkdir -p "$FONT_DIR"
+
+    # Check if JetBrains Mono Nerd Font is already installed
+    if ls "$FONT_DIR"/JetBrainsMono*Nerd*.ttf &>/dev/null; then
+        print_info "JetBrains Mono Nerd Font already installed"
+    else
+        FONT_NAME="JetBrainsMono"
+        FONT_VERSION="3.2.1"
+        FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v${FONT_VERSION}/${FONT_NAME}.zip"
+
+        print_info "Downloading ${FONT_NAME} Nerd Font..."
+        FONT_TEMP_DIR=$(mktemp -d)
+
+        if curl -L -o "$FONT_TEMP_DIR/${FONT_NAME}.zip" "$FONT_URL" 2>/dev/null; then
+            print_info "Extracting font files..."
+
+            # Check if unzip is available
+            if command -v unzip &> /dev/null; then
+                cd "$FONT_TEMP_DIR"
+                unzip -q "${FONT_NAME}.zip" 2>/dev/null || print_warning "Some font files may have failed to extract"
+
+                # Copy TrueType fonts (skip variable fonts and Windows-specific)
+                find . -name "*.ttf" ! -name "*Windows*" -exec cp {} "$FONT_DIR/" \; 2>/dev/null
+                cd - > /dev/null
+
+                # Update font cache (Linux only)
+                if [[ "$OSTYPE" == "linux-gnu"* ]] && command -v fc-cache &> /dev/null; then
+                    fc-cache -f "$FONT_DIR" 2>/dev/null
+                fi
+
+                print_success "JetBrains Mono Nerd Font installed!"
+                print_info "Remember to set your terminal font to 'JetBrainsMono Nerd Font'"
+            else
+                print_warning "unzip not found, skipping font installation"
+                print_info "Install unzip manually: sudo apt install unzip (Debian/Ubuntu)"
+            fi
+        else
+            print_warning "Failed to download font, icons may display as '?' symbols"
+            print_info "Manual installation: https://www.nerdfonts.com/font-downloads"
+        fi
+
+        # Clean up
+        rm -rf "$FONT_TEMP_DIR"
+    fi
+else
+    print_warning "Font installation skipped for this OS"
+fi
+
+# 7. Install language servers and tools via system package manager (optional)
 print_info "Installing language servers and development tools..."
 
 # Detect package manager and install tools
@@ -268,10 +331,19 @@ if [ -f ~/.zshrc ]; then
 elif [ -f ~/.bashrc ]; then
     echo "     source ~/.bashrc"
 fi
-echo "  2. Launch Neovim with: nvim"
-echo "  3. View controls guide: Space + h h (or :Help)"
-echo "  4. Open file explorer with: Ctrl+N"
-echo "  5. Open a directory with: nvim ~/your-directory"
+echo "  2. Set terminal font to 'JetBrainsMono Nerd Font' (see below)"
+echo "  3. Launch Neovim with: nvim"
+echo "  4. View controls guide: Space + h h (or :Help)"
+echo "  5. Open file explorer with: Ctrl+N"
+
+echo ""
+print_warning "⚠️  IMPORTANT: Set your terminal font to 'JetBrainsMono Nerd Font'"
+print_info "Terminal-specific font configuration:"
+echo "  • GNOME Terminal: Edit → Preferences → Profile → Text → Custom font"
+echo "  • Alacritty: Add 'font: { normal: { family: JetBrainsMono Nerd Font } }' to config"
+echo "  • Kitty: Add 'font_family JetBrainsMono Nerd Font' to config"
+echo "  • Windows Terminal: Add \"fontFace\": \"JetBrainsMono Nerd Font\" to settings"
+echo ""
 
 print_warning "Note: Some plugins may require additional setup or language servers."
 print_info "You can install additional language servers using :Mason in Neovim."

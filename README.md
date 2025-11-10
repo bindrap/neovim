@@ -65,6 +65,12 @@ source ~/.zshrc
 
 Or simply restart your terminal.
 
+**Important:** After installation, set your terminal font to **JetBrainsMono Nerd Font** to display icons properly:
+- **GNOME Terminal**: Edit → Preferences → Profile → Text → Custom font
+- **Alacritty**: Add `font: { normal: { family: 'JetBrainsMono Nerd Font' } }` to `~/.config/alacritty/alacritty.yml`
+- **Kitty**: Add `font_family JetBrainsMono Nerd Font` to `~/.config/kitty/kitty.conf`
+- **Windows Terminal**: Add `"fontFace": "JetBrainsMono Nerd Font"` to settings.json
+
 ## What the Script Does
 
 1. **Downloads & installs Neovim** to `/opt/nvim-linux-x86_64`
@@ -74,10 +80,11 @@ Or simply restart your terminal.
    - `lua/` - Custom modules and features
    - `lazy-lock.json` - Plugin version lock
    - `CONTROLS.md` - Help guide (access with `Space + h h`)
-4. **Installs system dependencies** (Node.js, npm, Python)
-5. **Bootstraps lazy.nvim** plugin manager
-6. **Installs all plugins** automatically
-7. **Installs language servers** (Pyright, Lua Language Server) via Mason
+4. **Installs JetBrains Mono Nerd Font** (fixes icon display in Neo-tree and UI)
+5. **Installs system dependencies** (Node.js, npm, Python)
+6. **Bootstraps lazy.nvim** plugin manager
+7. **Installs all plugins** automatically
+8. **Installs language servers** (Pyright, Lua Language Server) via Mason
 
 ## Usage
 
