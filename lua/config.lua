@@ -25,7 +25,7 @@ end
 function M.change_notes_dir()
   local dir_options = {
     { name = 'Notes Directory (Main Vault)', key = 'notes_dir', current = M.notes_dir },
-    { name = 'Parteek Directory', key = 'parteek_dir', current = M.parteek_dir },
+    { name = 'Personal Directory', key = 'parteek_dir', current = M.parteek_dir },
     { name = 'Jits Directory', key = 'jits_dir', current = M.jits_dir },
     { name = 'Projects Directory (Kanban)', key = 'projects_dir', current = M.projects_dir },
     { name = 'Vault Base Directory', key = 'vault_base', current = M.vault_base },
