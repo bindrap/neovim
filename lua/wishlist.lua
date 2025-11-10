@@ -1,11 +1,14 @@
 -- Wishlist keymap: Space w w opens wishlist.md
+local config = require('config')
+
 vim.keymap.set('n', '<leader>ww', function()
-  local wishlist_path = vim.fn.expand('~/Documents/Notes/wishlist.md')
+  local paths = config.get_paths()
+  local wishlist_path = paths.wishlist
 
   -- Check if file exists
   if vim.fn.filereadable(wishlist_path) == 0 then
     -- Create directory if it doesn't exist
-    vim.fn.mkdir(vim.fn.expand('~/Documents/Notes'), 'p')
+    vim.fn.mkdir(config.notes_dir, 'p')
 
     -- Create file with basic template
     local file = io.open(wishlist_path, 'w')

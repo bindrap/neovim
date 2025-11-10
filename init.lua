@@ -2,6 +2,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Load centralized configuration
+local config = require('config')
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -144,9 +147,10 @@ require("lazy").setup({
       name = "catppuccin",
       priority = 1000,
       config = function()
+        local is_wsl = config.is_wsl()
         require("catppuccin").setup({
           flavour = "mocha", -- latte, frappe, macchiato, mocha
-          transparent_background = true,
+          transparent_background = not is_wsl, -- Disable transparency on WSL
           integrations = {
             treesitter = true,
             telescope = true,
@@ -156,6 +160,11 @@ require("lazy").setup({
           },
         })
         vim.cmd.colorscheme("catppuccin")
+
+        -- Notify user of WSL detection
+        if is_wsl then
+          vim.notify('WSL detected: Using Catppuccin theme with solid background', vim.log.levels.INFO)
+        end
       end,
     },
 
@@ -198,13 +207,13 @@ require("lazy").setup({
       "renerocksai/telekasten.nvim",
       dependencies = { "nvim-telescope/telescope.nvim" },
       config = function()
-        local home = vim.fn.expand("~/Documents/Notes")
+        local paths = config.get_paths()
         require("telekasten").setup({
-          home = home,
+          home = paths.home,
           -- Daily notes
-          dailies = home .. "/" .. "daily",
-          weeklies = home .. "/" .. "weekly",
-          templates = home .. "/" .. "templates",
+          dailies = paths.dailies,
+          weeklies = paths.weeklies,
+          templates = paths.templates,
 
           -- Image support (auto-paste from clipboard)
           image_subdir = "img",
@@ -213,9 +222,9 @@ require("lazy").setup({
           extension = ".md",
 
           -- Template for new notes
-          template_new_note = home .. "/" .. "templates/new_note.md",
-          template_new_daily = home .. "/" .. "templates/daily.md",
-          template_new_weekly = home .. "/" .. "templates/weekly.md",
+          template_new_note = paths.templates .. "/new_note.md",
+          template_new_daily = paths.templates .. "/daily.md",
+          template_new_weekly = paths.templates .. "/weekly.md",
 
           -- Wiki-style links
           follow_creates_nonexisting = true,
@@ -289,23 +298,26 @@ require("lazy").setup({
       dependencies = {
         "nvim-lua/plenary.nvim",
       },
-      opts = {
-        workspaces = {
-          {
-            name = "notes",
-            path = vim.fn.expand("~/Documents/Notes"),
+      config = function()
+        local paths = config.get_paths()
+        require("obsidian").setup({
+          workspaces = {
+            {
+              name = "notes",
+              path = paths.home,
+            },
           },
-        },
-        -- Disable most obsidian.nvim features since we use Telekasten
-        disable_frontmatter = true,
-        daily_notes = {
-          folder = "daily",
-        },
-        -- Use Obsidian for graph view only
-        follow_url_func = function(url)
-          vim.fn.jobstart({"xdg-open", url})
-        end,
-      },
+          -- Disable most obsidian.nvim features since we use Telekasten
+          disable_frontmatter = true,
+          daily_notes = {
+            folder = "daily",
+          },
+          -- Use Obsidian for graph view only
+          follow_url_func = function(url)
+            vim.fn.jobstart({"xdg-open", url})
+          end,
+        })
+      end,
     },
 
     -- ✅ Telescope FZF native (performance boost)
@@ -589,7 +601,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Auto-insert kanban template for new .md files in .notes folder
 vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*/Documents/Notes/.notes/*.md",
+  pattern = config.notes_dir .. "/.notes/*.md",
   callback = function()
     local lines = {
       "## Backlog",
@@ -610,3 +622,8 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 require('wishlist')
 require('fuzzy-finder')
 require('help-viewer')
+
+-- Global keymap: Space + c + d to change notes directory
+vim.keymap.set('n', '<leader>cd', function()
+  config.change_notes_dir()
+end, { desc = 'Change notes directory' })

@@ -4,10 +4,11 @@
 local M = {}
 local uv = vim.loop
 local api = vim.api
+local user_config = require('config')
 
 -- Configuration
 M.config = {
-  notes_dir = vim.fn.expand('~/Documents/Notes'),
+  notes_dir = user_config.notes_dir,
   exclude_dirs = { '.git', 'img', 'templates' },
   max_visible_nodes = 100,
   use_graphics = true, -- Use kitty graphics if available
