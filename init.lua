@@ -627,3 +627,13 @@ require('help-viewer')
 vim.keymap.set('n', '<leader>cd', function()
   config.change_notes_dir()
 end, { desc = 'Change notes directory' })
+
+-- Note Graph setup (custom Obsidian-like graph view)
+vim.keymap.set('n', '<leader>ng', function()
+  require('note-graph').open()
+end, { desc = 'Open Note Graph' })
+
+-- User command for note graph
+vim.api.nvim_create_user_command('NoteGraph', function()
+  require('note-graph').open()
+end, { desc = 'Open Obsidian-like note graph visualization' })
