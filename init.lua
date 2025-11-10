@@ -266,19 +266,19 @@ require("lazy").setup({
       "renerocksai/calendar-vim",
     },
 
-    -- ✅ Markdown preview in browser
-    {
-      "iamcco/markdown-preview.nvim",
-      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-      build = "cd app && npm install",
-      init = function()
-        vim.g.mkdp_filetypes = { "markdown" }
-      end,
-      ft = { "markdown" },
-      keys = {
-        { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" },
-      },
-    },
+    -- ✅ Markdown preview in browser (disabled - using custom lua module instead)
+    -- {
+    --   "iamcco/markdown-preview.nvim",
+    --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    --   build = "cd app && npm install",
+    --   init = function()
+    --     vim.g.mkdp_filetypes = { "markdown" }
+    --   end,
+    --   ft = { "markdown" },
+    --   keys = {
+    --     { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" },
+    --   },
+    -- },
 
     -- ✅ Terminal markdown preview (Glow)
     {
@@ -672,6 +672,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 require('wishlist')
 require('fuzzy-finder')
 require('help-viewer')
+require('markdown-preview').setup()
 
 -- Global keymap: Space + c + d to change notes directory
 vim.keymap.set('n', '<leader>cd', function()
