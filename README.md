@@ -69,7 +69,11 @@ Or simply restart your terminal.
 
 1. **Downloads & installs Neovim** to `/opt/nvim-linux-x86_64`
 2. **Adds Neovim to PATH** in both `~/.bashrc` and `~/.zshrc` (if they exist)
-3. **Copies configuration** to `~/.config/nvim/`
+3. **Copies configuration** to `~/.config/nvim/` including:
+   - `init.lua` - Main configuration file
+   - `lua/` - Custom modules and features
+   - `lazy-lock.json` - Plugin version lock
+   - `CONTROLS.md` - Help guide (access with `Space + h h`)
 4. **Installs system dependencies** (Node.js, npm, Python)
 5. **Bootstraps lazy.nvim** plugin manager
 6. **Installs all plugins** automatically
@@ -100,6 +104,7 @@ This alias automatically:
 
 ### Quick Start Keybindings
 
+- **Space + h h** - View complete controls guide (or type `:Help`)
 - **Ctrl+N** - Toggle file explorer (Neo-tree)
 - **Ctrl+Space** - Trigger autocomplete
 - **Tab** - Navigate autocomplete menu / Jump to next snippet field

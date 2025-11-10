@@ -178,6 +178,13 @@ else
     print_warning "lazy-lock.json not found, plugins will use latest versions"
 fi
 
+if [ -f "$CONFIG_SOURCE/CONTROLS.md" ]; then
+    cp "$CONFIG_SOURCE/CONTROLS.md" ~/.config/nvim/
+    print_success "Copied CONTROLS.md (help guide accessible via Space + h h)"
+else
+    print_warning "CONTROLS.md not found, help guide will not be available"
+fi
+
 # Clean up temp directory if we cloned
 if [ "$CONFIG_SOURCE" != "$SCRIPT_DIR" ]; then
     rm -rf "$CONFIG_SOURCE"
@@ -262,8 +269,9 @@ elif [ -f ~/.bashrc ]; then
     echo "     source ~/.bashrc"
 fi
 echo "  2. Launch Neovim with: nvim"
-echo "  3. Open file explorer with: Ctrl+N"
-echo "  4. Open a directory with: nvim ~/your-directory"
+echo "  3. View controls guide: Space + h h (or :Help)"
+echo "  4. Open file explorer with: Ctrl+N"
+echo "  5. Open a directory with: nvim ~/your-directory"
 
 print_warning "Note: Some plugins may require additional setup or language servers."
 print_info "You can install additional language servers using :Mason in Neovim."

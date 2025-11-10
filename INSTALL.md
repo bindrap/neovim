@@ -32,6 +32,7 @@ curl -fsSL https://raw.githubusercontent.com/bindrap/neovim/main/install_neovim.
    - `init.lua`
    - `lua/` directory with all your custom modules
    - `lazy-lock.json` (ensures consistent plugin versions)
+   - `CONTROLS.md` (comprehensive help guide, accessible via `Space + h h`)
 6. **Installs system dependencies** (nodejs, npm, python3)
 7. **Automatically installs all plugins** via Lazy.nvim
 8. **Sets up language servers** via Mason
