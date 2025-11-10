@@ -198,7 +198,7 @@ require("lazy").setup({
       "renerocksai/telekasten.nvim",
       dependencies = { "nvim-telescope/telescope.nvim" },
       config = function()
-        local home = "/home/parteek/Documents/Notes"
+        local home = vim.fn.expand("~/Documents/Notes")
         require("telekasten").setup({
           home = home,
           -- Daily notes
@@ -293,7 +293,7 @@ require("lazy").setup({
         workspaces = {
           {
             name = "notes",
-            path = "/home/parteek/Documents/Notes",
+            path = vim.fn.expand("~/Documents/Notes"),
           },
         },
         -- Disable most obsidian.nvim features since we use Telekasten
