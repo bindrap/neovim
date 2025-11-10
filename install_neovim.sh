@@ -275,6 +275,12 @@ fi
 
 echo ""
 print_info "Troubleshooting tips:"
+echo "  - For LuaSnip 'local changes' errors, clean plugin cache:"
+echo "    rm -rf ~/.local/share/nvim/lazy/LuaSnip"
+echo "  - image.nvim is disabled by default (optional - needs luarocks)"
+echo "  - For plugin errors: Open nvim and run :Lazy sync"
+echo "  - For LSP issues: Run :Mason in Neovim"
+echo "  - For health check: Run :checkhealth in Neovim"
 echo "  - If you see 'libsimdjson.so' errors, update Node.js or reinstall it:"
 echo "    sudo apt update && sudo apt install --reinstall nodejs"
 echo "  - If language servers fail to install, run :Mason inside Neovim"

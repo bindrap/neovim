@@ -40,7 +40,11 @@ require("lazy").setup({
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
-        "L3MON4D3/LuaSnip",
+        {
+          "L3MON4D3/LuaSnip",
+          build = "make install_jsregexp",
+          version = "v2.*", -- Use stable version
+        },
         "saadparwaiz1/cmp_luasnip",
         "rafamadriz/friendly-snippets",
       },
@@ -177,9 +181,10 @@ require("lazy").setup({
       config = true,
     },
 
-    -- ✅ Image display
+    -- ✅ Image display (optional - requires system dependencies)
     {
       "3rd/image.nvim",
+      enabled = false, -- Disabled by default due to luarocks dependency issues
       dependencies = { "vhyrro/luarocks.nvim" },
       opts = {
         backend = "kitty", -- or "ueberzug"
@@ -193,7 +198,7 @@ require("lazy").setup({
       "renerocksai/telekasten.nvim",
       dependencies = { "nvim-telescope/telescope.nvim" },
       config = function()
-        local home = "/home/parteek/Documents/Notes"
+        local home = vim.fn.expand("~/Documents/Notes")
         require("telekasten").setup({
           home = home,
           -- Daily notes
@@ -288,7 +293,7 @@ require("lazy").setup({
         workspaces = {
           {
             name = "notes",
-            path = "/home/parteek/Documents/Notes",
+            path = vim.fn.expand("~/Documents/Notes"),
           },
         },
         -- Disable most obsidian.nvim features since we use Telekasten
