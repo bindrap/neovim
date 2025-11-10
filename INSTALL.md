@@ -32,9 +32,11 @@ curl -fsSL https://raw.githubusercontent.com/bindrap/neovim/main/install_neovim.
    - `init.lua`
    - `lua/` directory with all your custom modules
    - `lazy-lock.json` (ensures consistent plugin versions)
-6. **Installs system dependencies** (nodejs, npm, python3)
-7. **Automatically installs all plugins** via Lazy.nvim
-8. **Sets up language servers** via Mason
+   - `CONTROLS.md` (comprehensive help guide, accessible via `Space + h h`)
+6. **Installs JetBrains Mono Nerd Font** (fixes icon display - you'll need to set it in your terminal)
+7. **Installs system dependencies** (nodejs, npm, python3)
+8. **Automatically installs all plugins** via Lazy.nvim
+9. **Sets up language servers** via Mason
 
 ## Requirements
 
@@ -58,17 +60,34 @@ The script will check for these prerequisites:
 
 ## After Installation
 
-1. Restart your terminal or source your shell config:
+1. **Set your terminal font to JetBrainsMono Nerd Font** (required for proper icon display):
+   - **GNOME Terminal**: Edit → Preferences → Your Profile → Text → Enable "Custom font" → Select "JetBrainsMono Nerd Font"
+   - **Alacritty**: Add to `~/.config/alacritty/alacritty.yml`:
+     ```yaml
+     font:
+       normal:
+         family: 'JetBrainsMono Nerd Font'
+     ```
+   - **Kitty**: Add to `~/.config/kitty/kitty.conf`:
+     ```
+     font_family JetBrainsMono Nerd Font
+     ```
+   - **Windows Terminal**: Add to settings.json:
+     ```json
+     "fontFace": "JetBrainsMono Nerd Font"
+     ```
+
+2. Restart your terminal or source your shell config:
    ```bash
    source ~/.bashrc  # or ~/.zshrc
    ```
 
-2. Launch Neovim:
+3. Launch Neovim:
    ```bash
    nvim
    ```
 
-3. Key commands to get started:
+4. Key commands to get started:
    - `Ctrl+N` - Open file explorer
    - `:Mason` - Manage language servers
    - `:Lazy` - Manage plugins

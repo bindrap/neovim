@@ -33,6 +33,7 @@ Space + zT       - Today's daily note
 Space + zg       - Search in notes
 Space + zz       - Follow link
 Space + zb       - Show backlinks
+Space + ng       - Note graph (Obsidian-like visualization)
 
 Code Navigation:
 gd               - Go to definition
@@ -301,7 +302,37 @@ Space + mg       - Glow preview in terminal (quick view)
 :ObsidianSearch  - Search notes via Obsidian
 :ObsidianQuickSwitch - Quick switch notes
 ```
-**Note:** Use Obsidian app for graph visualization while editing in Neovim!
+
+### Note Graph Visualization
+**Custom Obsidian-like graph view built into Neovim!**
+```
+Space + ng       - Open note graph (shows network of linked notes)
+:NoteGraph       - Same as above (custom command)
+```
+
+**Inside Note Graph:**
+```
+h/j/k/l          - Pan view left/down/up/right
++ / - / =        - Zoom in / out
+/  or  f         - Filter notes by search term
+o  or  Enter     - Open selected note
+c                - Focus on current note
+i                - Toggle isolated nodes
+t                - Toggle transparency
+w                - Open web view in browser (interactive D3.js)
+q  or  Esc       - Close graph view
+Mouse click      - Select node
+Double click     - Open node
+```
+
+**Features:**
+- Force-directed physics layout
+- Shows connections between notes
+- Hub nodes highlighted (highly connected notes)
+- Current note highlighted in hot pink
+- Filter by note name
+- Interactive web export with D3.js
+- Clean, Obsidian-inspired design
 
 ### Note Organization
 ```
