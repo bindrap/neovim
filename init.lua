@@ -386,7 +386,8 @@ require("lazy").setup({
           "    ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║",
           "    ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝",
           "",
-          "              Parteek's Config v2.0",
+          "              Parteek's Config v3.0",
+          "           Press Space + h + h for help",
           "",
         }
 

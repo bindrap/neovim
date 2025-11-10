@@ -4,11 +4,11 @@
 local M = {}
 
 -- Default directories (can be changed with Space + c + d)
-M.vault_base = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
-M.notes_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
-M.parteek_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Parteek')
-M.jits_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/jits')
-M.projects_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Personal Projects/Projects')
+M.vault_base = vim.fn.expand('/home/parteek/Documents/Notes')
+M.notes_dir = vim.fn.expand('/home/parteek/Documents/Notes')
+M.parteek_dir = vim.fn.expand('/home/parteek/Documents/Notes/Parteek')
+M.jits_dir = vim.fn.expand('/home/parteek/Documents/Notes/jits')
+M.projects_dir = vim.fn.expand('/home/parteek/Documents/Notes/Personal Projects/Projects')
 
 -- Detect if running on WSL
 function M.is_wsl()
