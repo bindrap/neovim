@@ -242,11 +242,12 @@ require("lazy").setup({
 
         -- Keybindings
         local tk = require("telekasten")
+        local daily_auto = require("daily-note-automation")
         vim.keymap.set("n", "<leader>zf", tk.find_notes, { desc = "Find notes" })
         vim.keymap.set("n", "<leader>zd", tk.find_daily_notes, { desc = "Find daily notes" })
         vim.keymap.set("n", "<leader>zg", tk.search_notes, { desc = "Search in notes" })
         vim.keymap.set("n", "<leader>zz", tk.follow_link, { desc = "Follow link" })
-        vim.keymap.set("n", "<leader>zt", tk.goto_today, { desc = "Go to today's note" })
+        vim.keymap.set("n", "<leader>zt", daily_auto.open_today_note, { desc = "Go to today's note" })
         vim.keymap.set("n", "<leader>zW", tk.goto_thisweek, { desc = "Go to this week's note" })
         vim.keymap.set("n", "<leader>zn", tk.new_note, { desc = "New note" })
         vim.keymap.set("n", "<leader>zc", tk.show_calendar, { desc = "Show calendar" })

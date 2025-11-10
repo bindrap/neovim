@@ -13,9 +13,9 @@ M.config = {
   max_visible_nodes = 100,
   use_graphics = true, -- Use kitty graphics if available
   physics = {
-    spring_length = 300,      -- Even longer ideal distance for cleaner spread
-    spring_strength = 0.012,  -- Even gentler pull for smoother layout
-    repulsion = 22000,        -- Stronger push for maximum clarity
+    spring_length = 120,      -- Closer distance for more compact layout
+    spring_strength = 0.015,  -- Slightly stronger pull to keep nodes together
+    repulsion = 8000,         -- Reduced push for tighter clustering
     damping = 0.92,           -- Smoother settling
     iterations = 250,         -- More iterations for better convergence
   },

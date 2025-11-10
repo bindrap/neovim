@@ -320,10 +320,10 @@ function M.generate_html(nodes, edges, current_note)
 
     // Force simulation
     const simulation = d3.forceSimulation(data.nodes)
-      .force("link", d3.forceLink(data.edges).id(d => d.id).distance(100))
-      .force("charge", d3.forceManyBody().strength(-300))
+      .force("link", d3.forceLink(data.edges).id(d => d.id).distance(50))
+      .force("charge", d3.forceManyBody().strength(-150))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(20));
+      .force("collision", d3.forceCollide().radius(15));
 
     // Draw edges
     const link = g.append("g")
