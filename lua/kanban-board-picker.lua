@@ -2,9 +2,17 @@
 -- Add this to your Neovim config
 
 local M = {}
+local config = require('config')
 
 M.open_board_picker = function()
-  local boards_dir = vim.fn.expand('~/Documents/Notes/Personal Projects/Projects')
+  local paths = config.get_paths()
+  local boards_dir = paths.projects
+
+  -- Check if directory exists, create if not
+  if vim.fn.isdirectory(boards_dir) == 0 then
+    vim.fn.mkdir(boards_dir, 'p')
+    vim.notify('Created projects directory: ' .. boards_dir, vim.log.levels.INFO)
+  end
 
   -- Get all .md files in the directory
   local files = vim.fn.glob(boards_dir .. '/*.md', false, true)
