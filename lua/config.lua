@@ -4,12 +4,12 @@
 local M = {}
 
 -- Default directories (can be changed with Space + c + d)
--- Using ~ to expand to current user's home directory (works for any user)
-M.vault_base = vim.fn.expand('~/Documents/Notes')
-M.notes_dir = vim.fn.expand('~/Documents/Notes')
-M.parteek_dir = vim.fn.expand('~/Documents/Notes/Parteek')
-M.jits_dir = vim.fn.expand('~/Documents/Notes/jits')
-M.projects_dir = vim.fn.expand('~/Documents/Notes/Personal Projects/Projects')
+-- WSL path to Windows Documents folder
+M.vault_base = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
+M.notes_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
+M.parteek_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Parteek')
+M.jits_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/jits')
+M.projects_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Personal Projects')
 
 -- Detect if running on WSL
 function M.is_wsl()

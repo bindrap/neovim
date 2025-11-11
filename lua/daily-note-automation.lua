@@ -5,7 +5,7 @@ local M = {}
 
 -- Configuration
 M.config = {
-  notes_dir = vim.fn.expand('~/Documents/Notes'),
+  notes_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault'),
   daily_dir = 'daily',
   templates_dir = 'templates',
   template_file = 'daily.md',
