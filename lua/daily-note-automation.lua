@@ -85,7 +85,7 @@ end
 
 -- Default template if file doesn't exist
 local function get_default_template()
-  return [[# {{title}}
+  return [=[# {{title}}
 
 **Date:** {{date}}
 
@@ -108,7 +108,7 @@ local function get_default_template()
 ## Tomorrow
 -
 
-]]
+]=]
 end
 
 -- Read the daily template
