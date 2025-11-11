@@ -4,11 +4,12 @@
 local M = {}
 
 -- Default directories (can be changed with Space + c + d)
-M.vault_base = vim.fn.expand('/home/parteek/Documents/Notes')
-M.notes_dir = vim.fn.expand('/home/parteek/Documents/Notes')
-M.parteek_dir = vim.fn.expand('/home/parteek/Documents/Notes/Parteek')
-M.jits_dir = vim.fn.expand('/home/parteek/Documents/Notes/jits')
-M.projects_dir = vim.fn.expand('/home/parteek/Documents/Notes/Personal Projects/Projects')
+-- Using ~ to expand to current user's home directory (works for any user)
+M.vault_base = vim.fn.expand('~/Documents/Notes')
+M.notes_dir = vim.fn.expand('~/Documents/Notes')
+M.parteek_dir = vim.fn.expand('~/Documents/Notes/Parteek')
+M.jits_dir = vim.fn.expand('~/Documents/Notes/jits')
+M.projects_dir = vim.fn.expand('~/Documents/Notes/Personal Projects/Projects')
 
 -- Detect if running on WSL
 function M.is_wsl()
