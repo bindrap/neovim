@@ -32,29 +32,83 @@ end
 local function extract_tomorrow_section(file_path)
   local file = io.open(file_path, 'r')
   if not file then
+    -- Debug: file doesn't exist
+    vim.notify('Debug: Yesterday\'s note not found at: ' .. file_path, vim.log.levels.DEBUG)
     return nil
   end
 
   local content = file:read('*a')
   file:close()
 
-  -- Find the "## Tomorrow" section
-  local tomorrow_pattern = '## Tomorrow\n(.-)\n*$'
-  local tomorrow_content = content:match(tomorrow_pattern)
+  -- Find the "## Tomorrow" section - use string manipulation instead of pattern
+  local tomorrow_start = content:find('## Tomorrow\n')
+  if not tomorrow_start then
+    -- Try without newline in case of different line endings
+    tomorrow_start = content:find('## Tomorrow')
+    if not tomorrow_start then
+      vim.notify('Debug: No "## Tomorrow" section found in yesterday\'s note', vim.log.levels.DEBUG)
+      return nil
+    end
+    -- Adjust to skip past the heading
+    tomorrow_start = tomorrow_start + 11  -- Length of "## Tomorrow"
+    -- Skip to next line
+    local newline = content:find('\n', tomorrow_start)
+    if newline then
+      tomorrow_start = newline
+    end
+  else
+    tomorrow_start = tomorrow_start + 11  -- Position after "## Tomorrow"
+  end
 
-  if not tomorrow_content then
-    -- Try alternative pattern in case there's content after Tomorrow section
-    tomorrow_pattern = '## Tomorrow\n(.-)\n##'
-    tomorrow_content = content:match(tomorrow_pattern)
+  -- Find the next ## section or end of file
+  local next_section = content:find('\n##', tomorrow_start + 1)
+
+  local tomorrow_content
+  if next_section then
+    -- Extract from start of Tomorrow content to next section
+    tomorrow_content = content:sub(tomorrow_start + 1, next_section - 1)
+  else
+    -- Extract from start of Tomorrow content to end of file
+    tomorrow_content = content:sub(tomorrow_start + 1)
   end
 
   if tomorrow_content then
-    -- Clean up the content and ensure it ends properly
-    tomorrow_content = tomorrow_content:gsub('\n+$', '') -- Remove trailing newlines
-    return tomorrow_content
+    -- Clean up the content: remove leading/trailing whitespace but keep structure
+    tomorrow_content = tomorrow_content:gsub('^%s+', ''):gsub('%s+$', '')
+    if tomorrow_content ~= '' then
+      return tomorrow_content
+    end
   end
 
   return nil
+end
+
+-- Default template if file doesn't exist
+local function get_default_template()
+  return [[# {{title}}
+
+**Date:** {{date}}
+
+---
+[[Personal Projects]]
+
+## Today's Focus
+-
+
+## Notes
+-
+
+
+## Tasks
+-
+
+## Achievements
+-
+
+## Tomorrow
+-
+
+]]
 end
 
 -- Read the daily template
@@ -62,8 +116,8 @@ local function read_template()
   local template_path = M.config.notes_dir .. '/' .. M.config.templates_dir .. '/' .. M.config.template_file
   local file = io.open(template_path, 'r')
   if not file then
-    vim.notify('Daily template not found: ' .. template_path, vim.log.levels.ERROR)
-    return nil
+    vim.notify('Daily template not found at: ' .. template_path .. ', using default template', vim.log.levels.WARN)
+    return get_default_template()
   end
 
   local template = file:read('*a')
@@ -78,6 +132,10 @@ function M.create_daily_note_with_yesterday_content()
 
   local today_path = get_daily_note_path(today)
   local yesterday_path = get_daily_note_path(yesterday)
+
+  -- Ensure daily directory exists
+  local daily_dir = M.config.notes_dir .. '/' .. M.config.daily_dir
+  vim.fn.mkdir(daily_dir, 'p')
 
   -- Check if today's note already exists
   local existing_file = io.open(today_path, 'r')
@@ -105,11 +163,26 @@ function M.create_daily_note_with_yesterday_content()
 
   if yesterday_tomorrow then
     -- Replace the "Today's Focus" section with yesterday's Tomorrow content
-    local focus_pattern = '(## Today\'s Focus\n)- \n'
-    local replacement = '\\1' .. yesterday_tomorrow .. '\n\n'
-    content = content:gsub(focus_pattern, replacement)
+    -- Use string.find and string.sub for more reliable replacement
+    local focus_start = content:find('## Today\'s Focus\n')
+    if focus_start then
+      -- Find the next ## section after Today's Focus
+      local next_section = content:find('\n##', focus_start + 17)  -- +17 to skip past "## Today's Focus\n"
 
-    vim.notify('✅ Pulled content from yesterday\'s Tomorrow section', vim.log.levels.INFO)
+      if next_section then
+        -- Replace everything between "## Today's Focus\n" and the next section
+        local before = content:sub(1, focus_start + 16)  -- Include "## Today's Focus\n"
+        local after = content:sub(next_section)
+        content = before .. yesterday_tomorrow .. '\n' .. after
+      else
+        -- If no next section, replace to end of file
+        content = content:sub(1, focus_start + 16) .. yesterday_tomorrow .. '\n'
+      end
+
+      vim.notify('✅ Pulled content from yesterday\'s Tomorrow section', vim.log.levels.INFO)
+    else
+      vim.notify('⚠️  Could not find Today\'s Focus section in template', vim.log.levels.WARN)
+    end
   else
     vim.notify('📝 No Tomorrow section found in yesterday\'s note', vim.log.levels.INFO)
   end
