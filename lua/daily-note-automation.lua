@@ -4,8 +4,14 @@
 local M = {}
 
 -- Configuration
+-- IMPORTANT: Set your notes vault path here or via environment variable
+-- Option 1: Set environment variable OBSIDIAN_VAULT in your shell config (~/.bashrc or ~/.zshrc):
+--   export OBSIDIAN_VAULT="/path/to/your/vault"
+-- Option 2: Directly edit the notes_dir below
+local default_vault = os.getenv('OBSIDIAN_VAULT') or vim.fn.expand('~/Documents/Notes')
+
 M.config = {
-  notes_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault'),
+  notes_dir = default_vault,
   daily_dir = 'daily',
   templates_dir = 'templates',
   template_file = 'daily.md',
@@ -127,6 +133,18 @@ end
 
 -- Create a new daily note with yesterday's Tomorrow content
 function M.create_daily_note_with_yesterday_content()
+  -- Validate that notes_dir exists and is accessible
+  local notes_dir_exists = vim.fn.isdirectory(M.config.notes_dir) == 1
+  if not notes_dir_exists then
+    vim.notify(
+      '❌ Obsidian vault not found at: ' .. M.config.notes_dir .. '\n' ..
+      'Please configure the vault path in ~/.config/nvim/lua/daily-note-automation.lua\n' ..
+      'or set the OBSIDIAN_VAULT environment variable',
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
   local today = get_today_date()
   local yesterday = get_yesterday_date()
 
@@ -135,7 +153,11 @@ function M.create_daily_note_with_yesterday_content()
 
   -- Ensure daily directory exists
   local daily_dir = M.config.notes_dir .. '/' .. M.config.daily_dir
-  vim.fn.mkdir(daily_dir, 'p')
+  local ok, err = pcall(vim.fn.mkdir, daily_dir, 'p')
+  if not ok then
+    vim.notify('❌ Failed to create daily directory: ' .. tostring(err), vim.log.levels.ERROR)
+    return
+  end
 
   -- Check if today's note already exists
   local existing_file = io.open(today_path, 'r')
