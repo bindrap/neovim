@@ -163,20 +163,29 @@ function M.create_daily_note_with_yesterday_content()
 
   if yesterday_tomorrow then
     -- Replace the "Today's Focus" section with yesterday's Tomorrow content
-    -- Use string.find and string.sub for more reliable replacement
-    local focus_start = content:find('## Today\'s Focus\n')
+    -- Try to find the heading with different possible line endings
+    local focus_pattern = '## Today\'s Focus'
+    local focus_start, focus_end = content:find(focus_pattern)
+
     if focus_start then
+      -- Find where the actual content starts (after the heading and newline)
+      local content_start = focus_end + 1
+      -- Skip any whitespace/newlines after the heading
+      while content_start <= #content and content:sub(content_start, content_start):match('[\r\n]') do
+        content_start = content_start + 1
+      end
+
       -- Find the next ## section after Today's Focus
-      local next_section = content:find('\n##', focus_start + 17)  -- +17 to skip past "## Today's Focus\n"
+      local next_section = content:find('\n##', content_start)
 
       if next_section then
-        -- Replace everything between "## Today's Focus\n" and the next section
-        local before = content:sub(1, focus_start + 16)  -- Include "## Today's Focus\n"
+        -- Build new content: keep heading, add yesterday's content, keep rest
+        local before = content:sub(1, focus_end) .. '\n'  -- Heading + newline
         local after = content:sub(next_section)
         content = before .. yesterday_tomorrow .. '\n' .. after
       else
         -- If no next section, replace to end of file
-        content = content:sub(1, focus_start + 16) .. yesterday_tomorrow .. '\n'
+        content = content:sub(1, focus_end) .. '\n' .. yesterday_tomorrow .. '\n'
       end
 
       vim.notify('✅ Pulled content from yesterday\'s Tomorrow section', vim.log.levels.INFO)
