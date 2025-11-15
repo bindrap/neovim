@@ -4,12 +4,14 @@
 local M = {}
 
 -- Default directories (can be changed with Space + c + d)
--- WSL path to Windows Documents folder
-M.vault_base = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
-M.notes_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault')
-M.parteek_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Parteek')
-M.jits_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/jits')
-M.projects_dir = vim.fn.expand('/mnt/c/Users/bindrap/Documents/Obsidian Vault/Personal Projects')
+-- Set via OBSIDIAN_VAULT environment variable or defaults to ~/Documents/Notes
+local default_vault = os.getenv('OBSIDIAN_VAULT') or vim.fn.expand('~/Documents/Notes')
+
+M.vault_base = default_vault
+M.notes_dir = default_vault
+M.parteek_dir = default_vault .. '/Parteek'
+M.jits_dir = default_vault .. '/jits'
+M.projects_dir = default_vault .. '/Personal Projects'
 
 -- Detect if running on WSL
 function M.is_wsl()
